@@ -1,0 +1,19 @@
+
+spring:
+  application:
+    name : gestion_des_soins
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: anass
+    password: anass
+    driver-class-name: oracle.jdbc.OracleDriver
+    jpa:
+      hibernate:
+        ddl-auto: update
+        show-sql: true
+        format-sql: true
+    properties:
+        hibernate:
+            dialect: org.hibernate.dialect.Oracle12cDialect
+server:
+  port: 8070
