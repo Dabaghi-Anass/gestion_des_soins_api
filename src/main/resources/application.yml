@@ -1,19 +1,26 @@
-
 spring:
   application:
     name : gestion_des_soins
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:XE
-    username: anass
-    password: anass
-    driver-class-name: oracle.jdbc.OracleDriver
-    jpa:
-      hibernate:
-        ddl-auto: update
-        show-sql: true
-        format-sql: true
+    url: jdbc:mysql://localhost:3306/hopital_pfe
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: anass.debbaghi123@gmail.com
+    password: wxhkrooxdflsgmik
     properties:
-        hibernate:
-            dialect: org.hibernate.dialect.Oracle12cDialect
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 8070
+
