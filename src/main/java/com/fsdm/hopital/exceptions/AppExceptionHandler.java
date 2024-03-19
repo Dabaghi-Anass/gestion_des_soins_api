@@ -7,7 +7,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotSavedException.class)
     public ResponseEntity<UserNotSavedException> handleUserNotSavedException(UserNotSavedException e) {
-        System.out.println(e.getMessage());
+        return ResponseEntity.badRequest().body(e);
+    }
+    @ExceptionHandler(TokenNotFoundException.class)
+    public ResponseEntity<TokenNotFoundException> handleTokenNotSavedException(TokenNotFoundException e) {
         return ResponseEntity.badRequest().body(e);
     }
 }

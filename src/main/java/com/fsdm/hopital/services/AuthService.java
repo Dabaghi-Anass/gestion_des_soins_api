@@ -17,21 +17,23 @@ import java.util.UUID;
 public class AuthService {
     private final EmailService emailService;
     private final UserRepository userRepository;
-    private final EmailVerificationTokenRepository tokenRepository;
-    @SneakyThrows
-    public void sendVerificationToken(User user) {
-        user.setIsVerified(false);
-        User userFromDb = userRepository.save(user);
-        if(userFromDb == null) {
-            throw new UserNotSavedException("User not saved");
-        }
+    private final EmailVerificationTokenService tokenService;
+    private final UserService userService;
+
+    private EmailVerificationToken generateEmailVToken(User user){
         String token = UUID.randomUUID().toString();
         EmailVerificationToken verificationToken = EmailVerificationToken
                 .builder()
-                .user(userFromDb)
+                .user(user)
                 .token(token)
                 .build();
-        EmailVerificationToken tokenFromDb = tokenRepository.save(verificationToken);
+        return verificationToken;
+    }
+    @SneakyThrows
+    public void sendVerificationToken(User user) {
+        user.setIsVerified(false);
+        User userFromDb = userService.saveUser(user);
+        EmailVerificationToken tokenFromDb = tokenService.saveToken(generateEmailVToken(userFromDb));
         emailService.sendVerificationEmail(user.getUsername(), user.getFirstName(), tokenFromDb.getToken());
     }
     public void loginUser(User user) {
