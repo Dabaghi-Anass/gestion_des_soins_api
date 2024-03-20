@@ -5,10 +5,8 @@ import com.fsdm.hopital.types.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.validation.Payload;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -18,13 +16,13 @@ import java.util.function.Function;
 @Getter
 @RequiredArgsConstructor
 public class JwtUtils {
-    private String signingKey = "Ixk44iWJj6ZSRUZ2b6Oc1KH0YzsoEqsjR21x8WEUUzyU8xlhjOn9bwcfhjsykbAuTJEUaAtqvxRvi2ORZa54aIQCuIb7oVJgu3aWPFsiVYzXZfLOZJs9Du2RXp96JwnN";
+
+    private String signingKey =  "Ixk44iWJj6ZSRUZ2b6Oc1KH0YzsoEqsjR21x8WEUUzyU8xlhjOn9bwcfhjsykbAuTJEUaAtqvxRvi2ORZa54aIQCuIb7oVJgu3aWPFsiVYzXZfLOZJs9Du2RXp96JwnN";
     private int expiration = 604_800;
     public String generateToken(User user) {
-        User userFromAuth = (User) user;
         String jwt = Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("role", userFromAuth.getRole())
+                .claim("role", ((User) user).getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS256 , signingKey.getBytes())
@@ -48,8 +46,7 @@ public class JwtUtils {
         return username.equals(user.getUsername());
     }
     public Role extractRole(String token) {
-        Role role = Role.valueOf((String) extractClaim(token, claims -> claims.get("role")));
-        return role;
+        return Role.valueOf((String) extractClaim(token, claims -> claims.get("role")));
     }
     public String extractUserName(String token) {
         return extractClaim(token , Claims::getSubject).toString();
@@ -60,5 +57,10 @@ public class JwtUtils {
     public boolean isTokenExpired(String token) {
         Date expirationDate = getTokenExpiration(token);
         return expirationDate.before(new Date());
+    }
+    public boolean validateTokenSignature(String token){
+        return Jwts.parser()
+                .setSigningKey(signingKey.getBytes())
+                .isSigned(token) && !isTokenExpired(token);
     }
 }
