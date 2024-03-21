@@ -1,4 +1,4 @@
-package com.fsdm.hopital.exceptions;
+package com.fsdm.hopital.types;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserNotSavedException extends Exception {
-    private String message;
+public class ChangePasswordRequest {
+    private String username;
+    private String oldPassword;
+    private String newPassword;
 }

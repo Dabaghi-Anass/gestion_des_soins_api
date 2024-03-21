@@ -5,6 +5,7 @@ import com.fsdm.hopital.entities.User;
 import com.fsdm.hopital.services.AuthService;
 import com.fsdm.hopital.services.UserService;
 import com.fsdm.hopital.types.ActionEntity;
+import com.fsdm.hopital.types.ChangePasswordRequest;
 import com.fsdm.hopital.types.JsonWebToken;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -62,5 +63,28 @@ public class AuthController {
         Cookie cookie = createAuthCookie(jwt);
         response.addCookie(cookie);
         return ResponseEntity.ok().body(loggedUser);
+    }
+    @GetMapping("/logout")
+    public void logoutUser() {
+        Cookie cookie = new Cookie("x-auth" , "");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+    @PostMapping("/change-password")
+    public ResponseEntity<ActionEntity> changePassword(@RequestBody ChangePasswordRequest changeRequest){
+        userService.changePassword(changeRequest);
+        return ResponseEntity.ok(new ActionEntity("PASSWORD_CHANGED" , "password changed successfully" , true));
+    }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ActionEntity> forgotPassword(@RequestBody String username){
+        User user = userService.getUserByUsername(username);
+        authService.sendPasswordRetrieveLink(user);
+        return ResponseEntity.ok(new ActionEntity("EMAIL_SENT" , "password recovery email sent" , true));
+    }
+    @PostMapping("/reset-password/{token}")
+    public ResponseEntity<ActionEntity> resetPassword(@PathVariable("token") String token , @RequestBody String newPassword){
+        userService.resetPassword(token , newPassword);
+        return ResponseEntity.ok(new ActionEntity("PASSWORD_RESET" , "password reset successfully" , true));
     }
 }

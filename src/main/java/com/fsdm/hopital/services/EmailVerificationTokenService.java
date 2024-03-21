@@ -1,7 +1,6 @@
 package com.fsdm.hopital.services;
 
 import com.fsdm.hopital.entities.EmailVerificationToken;
-import com.fsdm.hopital.exceptions.TokenNotFoundException;
 import com.fsdm.hopital.repositories.EmailVerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
