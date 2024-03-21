@@ -6,7 +6,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Exception> handleTokenNotSavedException(TokenNotFoundException e) {
+    public ResponseEntity<Exception> handleTokenNotSavedException(Exception e) {
         return ResponseEntity.badRequest().body(e);
     }
 }

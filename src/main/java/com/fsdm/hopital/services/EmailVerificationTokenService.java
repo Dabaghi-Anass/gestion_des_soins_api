@@ -18,7 +18,7 @@ public class EmailVerificationTokenService {
     @SneakyThrows
     public  EmailVerificationToken findByToken(String token){
         Optional<EmailVerificationToken> tokenFromRepo = repository.findByToken(token);
-        if(tokenFromRepo.isEmpty()) throw new TokenNotFoundException("token not found");
+        if(tokenFromRepo.isEmpty()) throw new Exception("token not found");
         return tokenFromRepo.get();
     }
     public void deleteToken(EmailVerificationToken token){
