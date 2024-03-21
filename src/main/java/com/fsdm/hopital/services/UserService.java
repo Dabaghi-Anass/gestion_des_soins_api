@@ -1,6 +1,7 @@
 package com.fsdm.hopital.services;
 
 import com.fsdm.hopital.entities.User;
+import com.fsdm.hopital.exceptions.UserNotFoundException;
 import com.fsdm.hopital.exceptions.UserNotSavedException;
 import com.fsdm.hopital.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,11 @@ public class UserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+    @SneakyThrows
+    public User getUserByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isEmpty()) throw new UserNotFoundException("User not found");
+        return user.get();
     }
 }

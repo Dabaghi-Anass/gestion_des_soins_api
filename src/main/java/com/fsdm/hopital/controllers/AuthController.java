@@ -3,6 +3,7 @@ package com.fsdm.hopital.controllers;
 import com.fsdm.hopital.auth.jwt.JwtUtils;
 import com.fsdm.hopital.entities.User;
 import com.fsdm.hopital.services.AuthService;
+import com.fsdm.hopital.services.UserService;
 import com.fsdm.hopital.types.ActionEntity;
 import com.fsdm.hopital.types.JsonWebToken;
 import jakarta.servlet.http.Cookie;
@@ -22,6 +23,7 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final AuthService authService;
     private final HttpServletResponse response;
+    private final UserService userService;
     @PostMapping("/register")
     public ResponseEntity<ActionEntity> registerUser(@Valid  @RequestBody User userDetails) {
         authService.sendVerificationToken(userDetails);
@@ -36,19 +38,29 @@ public class AuthController {
         return cookie;
     }
     @GetMapping("/verifyEmail")
-    public ResponseEntity<JsonWebToken> verifyAndRegisterUser(@RequestParam("token") String token) {
+    public String verifyAndRegisterUser(@RequestParam("token") String token) {
         User user =  authService.verifyEmail(token);
         String jwt = jwtUtils.generateToken(user);
         Cookie cookie = createAuthCookie(jwt);
         response.addCookie(cookie);
-        return ResponseEntity.ok().body(new JsonWebToken(jwt));
+        return "email verified successfully";
     }
-    @GetMapping("/currentuser")
+    @GetMapping("/current-user")
     public ResponseEntity<User> getCurrentUser(@CookieValue("x-auth") String token) {
         boolean valid = jwtUtils.validateTokenSignature(token);
         if(!valid) return ResponseEntity.badRequest().build();
         String username = jwtUtils.extractUserName(token);
-        User user = authService.getUserByUsername(username);
+        User user = userService.getUserByUsername(username);
+        user.setPassword(null);
         return ResponseEntity.ok(user);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<User> loginUser(@RequestBody User user) {
+        User loggedUser = authService.loginUser(user);
+        loggedUser.setPassword(null);
+        String jwt = jwtUtils.generateToken(loggedUser);
+        Cookie cookie = createAuthCookie(jwt);
+        response.addCookie(cookie);
+        return ResponseEntity.ok().body(loggedUser);
     }
 }
