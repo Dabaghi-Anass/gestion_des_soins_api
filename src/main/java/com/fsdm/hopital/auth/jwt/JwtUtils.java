@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -17,18 +18,19 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtUtils {
 
-    private String signingKey =  "Ixk44iWJj6ZSRUZ2b6Oc1KH0YzsoEqsjR21x8WEUUzyU8xlhjOn9bwcfhjsykbAuTJEUaAtqvxRvi2ORZa54aIQCuIb7oVJgu3aWPFsiVYzXZfLOZJs9Du2RXp96JwnN";
+    private String signingKey =  "qwertyuiopasdfghjklzxcvbnm123456";
     private int expiration = 604_800;
     public String generateToken(User user) {
         String jwt = Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("role", ((User) user).getRole())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS256 , signingKey.getBytes())
                 .compact();
         return jwt;
     }
+    @SneakyThrows
     public Claims extractPayload(String token) {
         return Jwts.parser()
                 .setSigningKey(signingKey.getBytes())
@@ -52,11 +54,10 @@ public class JwtUtils {
         return extractClaim(token , Claims::getSubject).toString();
     }
     public Date getTokenExpiration(String token){
-       return  (Date) extractClaim(token , Claims::getExpiration);
+        return  (Date) extractClaim(token , Claims::getExpiration);
     }
     public boolean isTokenExpired(String token) {
-        Date expirationDate = getTokenExpiration(token);
-        return expirationDate.before(new Date());
+        return getTokenExpiration(token).before(new Date());
     }
     public boolean validateTokenSignature(String token){
         return Jwts.parser()

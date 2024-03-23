@@ -3,6 +3,8 @@ package com.fsdm.hopital.services;
 import com.fsdm.hopital.entities.EmailVerificationToken;
 import com.fsdm.hopital.entities.PasswordRecoveryToken;
 import com.fsdm.hopital.entities.User;
+import com.fsdm.hopital.exceptions.AppException;
+import com.fsdm.hopital.exceptions.ProcessingException;
 import com.fsdm.hopital.repositories.PasswordRecoveryTokenRepository;
 import com.fsdm.hopital.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +58,7 @@ public class AuthService {
         User user = tokenFromDb.getUser();
         user.setIsVerified(true);
         User savedUser = userService.saveUser(user);
-        if(savedUser == null) throw new Exception("User not saved");
+        if(savedUser == null) throw new AppException(ProcessingException.USER_NOT_SAVED);
         tokenService.deleteToken(tokenFromDb);
         return savedUser;
     }
@@ -64,12 +66,12 @@ public class AuthService {
     @SneakyThrows
     public User loginUser(User user) {
         Optional<User> userFromDb = userRepository.findByUsername(user.getUsername());
-        if(userFromDb.isEmpty()) throw new Exception("invalid username or password");
+        if(userFromDb.isEmpty()) throw new AppException(ProcessingException.INVALID_USERNAME_PASSWORD);
         User user1 = userFromDb.get();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if(encoder.matches(user.getPassword(), user1.getPassword())) return user1;
         else{
-            throw new Exception("invalid username or password");
+            throw new AppException(ProcessingException.INVALID_USERNAME_PASSWORD);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.fsdm.hopital.filters;
 
 import com.fsdm.hopital.auth.jwt.JwtUtils;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -40,15 +41,22 @@ public class JwtFilter extends OncePerRequestFilter {
         }else{
             String token = extractTokenFromCookie(request);
             if (token == null) {
-                response.setStatus(403);
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
-            if (!jwtUtils.validateTokenSignature(token)) {
-                response.setStatus(403);
-                return;
+            try {
+                boolean valid = jwtUtils.validateTokenSignature(token);
+                if(!valid) {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
+                response.addHeader("x-auth", token);
+                filterChain.doFilter(request, response);
             }
-            response.addHeader("x-auth", token);
-            filterChain.doFilter(request, response);
+            catch(ExpiredJwtException expiredJwtException) {
+                System.out.println(expiredJwtException.getMessage());
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            }
         }
     }
 

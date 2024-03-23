@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -26,7 +27,7 @@ public class AuthController {
     private final HttpServletResponse response;
     private final UserService userService;
     @PostMapping("/register")
-    public ResponseEntity<ActionEntity> registerUser(@Valid  @RequestBody User userDetails) {
+    public ResponseEntity<ActionEntity> registerUser(@Validated @RequestBody User userDetails) {
         authService.sendVerificationToken(userDetails);
         ActionEntity actionEntity = new ActionEntity("EMAIL_SENT" , "verification email sent" , true);
         return ResponseEntity.ok(actionEntity);
@@ -34,7 +35,7 @@ public class AuthController {
     private Cookie createAuthCookie(String token){
         Cookie cookie = new Cookie("x-auth" , token);
         cookie.setHttpOnly(true);
-        cookie.setMaxAge((int)new Date(jwtUtils.getExpiration()).getTime());
+        cookie.setMaxAge((int)new Date(jwtUtils.getExpiration() - 100).getTime());
         cookie.setPath("/");
         return cookie;
     }
