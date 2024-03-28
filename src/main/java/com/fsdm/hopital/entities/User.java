@@ -32,7 +32,7 @@ public class User implements Serializable{
     private String firstName;
     private String lastName;
     @NotBlank
-    @Size(min = 8, max = 255)
+    @Size(min = 8)
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;

@@ -1,5 +1,6 @@
 package com.fsdm.hopital.entities;
 
+import com.fsdm.hopital.types.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Entity
 @Data
@@ -21,6 +24,8 @@ public class Profile {
     private Long id;
     private String firstName;
     private String lastName;
-    private String adress;
+    private String address;
     private String imageUrl;
+    private Gender gender;
+    private Date birthDate;
 }

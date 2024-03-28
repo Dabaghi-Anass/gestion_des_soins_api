@@ -30,6 +30,9 @@ public class AuthController {
     public ResponseEntity<ActionEntity> registerUser(@Validated @RequestBody User userDetails) {
         authService.sendVerificationToken(userDetails);
         ActionEntity actionEntity = new ActionEntity("EMAIL_SENT" , "verification email sent" , true);
+        String jwt = jwtUtils.generateToken(userDetails);
+        response.addCookie(createAuthCookie(jwt));
+        response.addHeader("x-auth" , jwt);
         return ResponseEntity.ok(actionEntity);
     }
     private Cookie createAuthCookie(String token){
@@ -39,12 +42,21 @@ public class AuthController {
         cookie.setPath("/");
         return cookie;
     }
+    @GetMapping("/isVerified")
+    public ResponseEntity<ActionEntity> isEmailVerified(@RequestHeader("x-auth") String token) {
+        boolean valid = jwtUtils.validateTokenSignature(token);
+        if(!valid) return ResponseEntity.badRequest().body(new ActionEntity("INVALID_TOKEN" , "invalid auth token" , false));
+        String username = jwtUtils.extractUserName(token);
+        User user = userService.getUserByUsername(username);
+        if(user == null) return ResponseEntity.badRequest().body(new ActionEntity("USER_NOT_FOUND" , "user not found" , false));
+        return ResponseEntity.ok(new ActionEntity("USER_VERIFIED" , "user verified successfully" , user.getIsVerified()));
+    }
     @GetMapping("/verifyEmail")
     public String verifyAndRegisterUser(@RequestParam("token") String token) {
         User user =  authService.verifyEmail(token);
         String jwt = jwtUtils.generateToken(user);
-        Cookie cookie = createAuthCookie(jwt);
-        response.addCookie(cookie);
+        response.addCookie(createAuthCookie(jwt));
+        response.addHeader("x-auth" , jwt);
         return "email verified successfully";
     }
     @GetMapping("/current-user")
@@ -63,6 +75,7 @@ public class AuthController {
         String jwt = jwtUtils.generateToken(loggedUser);
         Cookie cookie = createAuthCookie(jwt);
         response.addCookie(cookie);
+        response.addHeader("x-auth" , jwt);
         return ResponseEntity.ok().body(loggedUser);
     }
     @GetMapping("/logout")
