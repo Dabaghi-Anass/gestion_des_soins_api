@@ -8,5 +8,7 @@ public enum ProcessingException {
     EMAIL_ALREADY_EXISTS,
     INVALID_PASSWORD,
     USER_NOT_SAVED,
-    INTERNAL_ERROR
+    INTERNAL_ERROR,
+    INVALID_OPERATON
+
 }

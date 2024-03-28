@@ -32,7 +32,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(registry -> registry.anyRequest().permitAll());
@@ -41,7 +40,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
     @Bean
     public WebSecurityCustomizer ignoringCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/auth/**");
+        return (web) -> web.ignoring().requestMatchers("/api/auth/**", "/api/profile/**");
     }
 
 }

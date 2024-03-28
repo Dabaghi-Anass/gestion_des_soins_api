@@ -60,7 +60,7 @@ public class AuthController {
         return "email verified successfully";
     }
     @GetMapping("/current-user")
-    public ResponseEntity<User> getCurrentUser(@CookieValue("x-auth") String token) {
+    public ResponseEntity<User> getCurrentUser(@RequestHeader("x-auth") String token) {
         boolean valid = jwtUtils.validateTokenSignature(token);
         if(!valid) return ResponseEntity.badRequest().build();
         String username = jwtUtils.extractUserName(token);

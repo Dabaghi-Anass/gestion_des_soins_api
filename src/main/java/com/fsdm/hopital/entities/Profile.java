@@ -1,10 +1,7 @@
 package com.fsdm.hopital.entities;
 
 import com.fsdm.hopital.types.Gender;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,11 +18,10 @@ import java.util.Date;
 public class Profile {
     @Id
     @Column(name = "profile_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
     private String address;
     private String imageUrl;
     private Gender gender;
-    private Date birthDate;
+    private String birthDate;
 }

@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
-    private final RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/auth/**");
+    private final RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/**/**");
 
     @Override
     @SneakyThrows
@@ -39,7 +39,8 @@ public class JwtFilter extends OncePerRequestFilter {
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         }else{
-            String token = extractTokenFromCookie(request);
+            String token = extractTokenFromHeaders(request);
+            System.out.println(token);
             if (token == null) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
@@ -51,6 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     return;
                 }
                 response.addHeader("x-auth", token);
+
                 filterChain.doFilter(request, response);
             }
             catch(ExpiredJwtException expiredJwtException) {
@@ -70,5 +72,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse(null);
+    }
+    private String extractTokenFromHeaders(HttpServletRequest request) {
+        return request.getHeader("x-auth");
     }
 }
