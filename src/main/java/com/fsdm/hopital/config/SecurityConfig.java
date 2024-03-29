@@ -17,6 +17,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableAutoConfiguration
 @EnableWebSecurity
@@ -29,18 +34,35 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .allowedMethods("GET" , "POST" , "PUT" , "DELETE")
                 .allowedHeaders("*")
                 .exposedHeaders("x-auth")
-                .allowCredentials(true)
                 .maxAge(3600);
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(registry -> registry.anyRequest().permitAll());
-        http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
+        http
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .anyRequest().permitAll()
+                )
+                .cors(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable);
+//        http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
         return http.build();
     }
     @Bean
     public WebSecurityCustomizer ignoringCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/auth/**", "/api/profile/**");
+        return (web) -> web.ignoring().requestMatchers("/api/auth/**");
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("x-auth"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", configuration);
+        return source;
+    }
 }

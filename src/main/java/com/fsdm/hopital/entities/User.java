@@ -28,16 +28,15 @@ public class User implements Serializable{
     private Long uid;
     @Email
     @NotBlank
+    @Column(unique = true)
     private String username;
     private String firstName;
     private String lastName;
-    @NotBlank
-    @Size(min = 8)
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isVerified;
-    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id" , foreignKey = @ForeignKey(name = "FK_USER_PROFILE"))
     private Profile profile;
 }

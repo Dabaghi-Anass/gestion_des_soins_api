@@ -32,11 +32,12 @@ public class AuthService {
                 .build();
     }
     @SneakyThrows
-    public void sendVerificationToken(User user) {
+    public User sendVerificationToken(User user) {
         user.setIsVerified(false);
         User userFromDb = userService.createUser(user);
         EmailVerificationToken tokenFromDb = tokenService.saveToken(generateEmailVToken(userFromDb));
         emailService.sendVerificationEmail(user.getUsername(), user.getFirstName(), tokenFromDb.getToken());
+        return userFromDb;
     }
     public void sendPasswordRetrieveLink(User user){
         String token = UUID.randomUUID().toString();

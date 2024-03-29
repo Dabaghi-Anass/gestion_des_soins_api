@@ -1,8 +1,10 @@
 package com.fsdm.hopital.controllers;
 
 import com.fsdm.hopital.auth.jwt.JwtUtils;
+import com.fsdm.hopital.entities.Profile;
 import com.fsdm.hopital.entities.User;
 import com.fsdm.hopital.services.AuthService;
+import com.fsdm.hopital.services.ProfileService;
 import com.fsdm.hopital.services.UserService;
 import com.fsdm.hopital.types.ActionEntity;
 import com.fsdm.hopital.types.ChangePasswordRequest;
@@ -26,14 +28,17 @@ public class AuthController {
     private final AuthService authService;
     private final HttpServletResponse response;
     private final UserService userService;
+    private final ProfileService profileService;
+    public record RegisterResponse(ActionEntity action , User user){}
     @PostMapping("/register")
-    public ResponseEntity<ActionEntity> registerUser(@Validated @RequestBody User userDetails) {
-        authService.sendVerificationToken(userDetails);
+    public ResponseEntity<RegisterResponse> registerUser(@Validated @RequestBody User userDetails) {
+        User user = authService.sendVerificationToken(userDetails);
         ActionEntity actionEntity = new ActionEntity("EMAIL_SENT" , "verification email sent" , true);
         String jwt = jwtUtils.generateToken(userDetails);
         response.addCookie(createAuthCookie(jwt));
         response.addHeader("x-auth" , jwt);
-        return ResponseEntity.ok(actionEntity);
+        user.setPassword(null);
+        return ResponseEntity.ok(new RegisterResponse(actionEntity , user));
     }
     private Cookie createAuthCookie(String token){
         Cookie cookie = new Cookie("x-auth" , token);
@@ -41,6 +46,12 @@ public class AuthController {
         cookie.setMaxAge((int)new Date(jwtUtils.getExpiration() - 100).getTime());
         cookie.setPath("/");
         return cookie;
+    }
+    @PutMapping("/user/createWithProfile")
+    public ResponseEntity<User> updateUser(@RequestBody User user){
+        User user1 = userService.saveUser(user);
+        user1.setPassword(null);
+        return ResponseEntity.ok(user1);
     }
     @GetMapping("/isVerified")
     public ResponseEntity<ActionEntity> isEmailVerified(@RequestHeader("x-auth") String token) {

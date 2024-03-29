@@ -7,6 +7,7 @@ import com.fsdm.hopital.exceptions.ProcessingException;
 import com.fsdm.hopital.repositories.PasswordRecoveryTokenRepository;
 import com.fsdm.hopital.repositories.UserRepository;
 import com.fsdm.hopital.types.ChangePasswordRequest;
+import io.jsonwebtoken.lang.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,9 +31,12 @@ public class UserService {
     }
     @SneakyThrows
     public User saveUser(User user){
+        if(user.getIsVerified() == null) user.setIsVerified(true);
         if(user == null) throw new AppException(ProcessingException.INVALID_USER_DETAILS);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
+        if(user.getPassword() != null){
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
         return userRepository.save(user);
     }
     @SneakyThrows
