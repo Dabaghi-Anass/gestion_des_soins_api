@@ -17,6 +17,6 @@ import java.util.List;
 public class Patient extends User{
     @Embedded
     private MedicalInformation medicalInformation;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private CareGiver careGiver;
 }

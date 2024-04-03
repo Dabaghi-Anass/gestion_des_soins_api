@@ -1,29 +1,29 @@
 package com.fsdm.hopital.entities;
 
 import com.fsdm.hopital.types.AppointementStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
+@Table(name = "appointments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Appointement {
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String date;
-    private String time;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     private AppointementStatus status;
     private String type;
     private String description;
-    private String patient;
-    private String doctor;
-    private String nurse;
-    private String companion;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Patient patient;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private User assignedTo;
 }

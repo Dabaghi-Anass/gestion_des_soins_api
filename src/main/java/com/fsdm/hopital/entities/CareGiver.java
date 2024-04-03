@@ -18,5 +18,6 @@ import java.util.List;
 public class CareGiver extends User {
     @OneToMany(mappedBy = "careGiver")
     List<Patient> associatedPatients;
-
+    @OneToMany(mappedBy = "assignedTo")
+    List<CareActivity> activities;
 }

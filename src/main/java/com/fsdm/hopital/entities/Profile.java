@@ -23,5 +23,6 @@ public class Profile {
     private String address;
     private String imageUrl;
     private Gender gender;
-    private String birthDate;
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
 }

@@ -4,16 +4,13 @@ import com.fsdm.hopital.types.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.springframework.lang.NonNullFields;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -40,4 +37,10 @@ public class User implements Serializable{
     @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id" , foreignKey = @ForeignKey(name = "FK_USER_PROFILE"))
     private Profile profile;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+    }
 }
