@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class JwtUtils {
 
     private String signingKey =  "qwertyuiopasdfghjklzxcvbnm123456";
-    private int expiration = 604_800;
+    private int expiration = 604_800_000;
     public String generateToken(User user) {
         String jwt = Jwts.builder()
                 .setSubject(user.getUsername())

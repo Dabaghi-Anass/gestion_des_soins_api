@@ -57,13 +57,11 @@ public class AuthService {
     public User verifyEmail(String token) {
         EmailVerificationToken tokenFromDb = tokenService.findByToken(token);
         User user = tokenFromDb.getUser();
-        user.setIsVerified(true);
-        User savedUser = userService.saveUser(user);
+        User savedUser = userService.veriyUser(user);
         if(savedUser == null) throw new AppException(ProcessingException.USER_NOT_SAVED);
         tokenService.deleteToken(tokenFromDb);
         return savedUser;
     }
-
     @SneakyThrows
     public User loginUser(User user) {
         Optional<User> userFromDb = userRepository.findByUsername(user.getUsername());

@@ -49,7 +49,7 @@ public class AuthController {
     }
     @PutMapping("/user/createWithProfile")
     public ResponseEntity<User> updateUser(@RequestBody User user){
-        User user1 = userService.saveUser(user);
+        User user1 = userService.updateUser(user);
         user1.setPassword(null);
         return ResponseEntity.ok(user1);
     }
@@ -87,6 +87,7 @@ public class AuthController {
         Cookie cookie = createAuthCookie(jwt);
         response.addCookie(cookie);
         response.addHeader("x-auth" , jwt);
+        loggedUser.setPassword(null);
         return ResponseEntity.ok().body(loggedUser);
     }
     @GetMapping("/logout")

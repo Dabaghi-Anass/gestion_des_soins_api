@@ -20,7 +20,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(builderClassName = "UserBuilder")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable{
     @Id
     @SequenceGenerator(name = "users_seq" , sequenceName = "users_seq" , allocationSize = 1)

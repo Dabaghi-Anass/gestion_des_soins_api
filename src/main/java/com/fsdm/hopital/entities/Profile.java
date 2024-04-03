@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "users_profiles")
+@Table(name = "profiles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

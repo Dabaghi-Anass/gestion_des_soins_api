@@ -29,15 +29,30 @@ public class UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+    public boolean isSet(Object obj){
+        return obj != null;
+    }
+    public User veriyUser(User user){
+         user.setIsVerified(true);
+        return userRepository.save(user);
+    }
     @SneakyThrows
-    public User saveUser(User user){
-        if(user.getIsVerified() == null) user.setIsVerified(true);
-        if(user == null) throw new AppException(ProcessingException.INVALID_USER_DETAILS);
+    public User updateUser(User user){
+        Optional<User> userOptional = userRepository.findById(user.getUid());
+        if(userOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
+        User user1 = userOptional.get();
+        user1.setUid(user.getUid());
+        if(isSet(user.getRole())) user1.setRole(user.getRole());
+        if(isSet(user.getUsername())) user1.setUsername(user.getUsername());
+        if(isSet(user.getFirstName())) user1.setFirstName(user.getFirstName());
+        if(isSet(user.getLastName())) user1.setLastName(user.getLastName());
+        if(isSet(user.getProfile())) user1.setProfile(user.getProfile());
+        if(isSet(user.getIsVerified())) user1.setIsVerified(user.getIsVerified());
         if(user.getPassword() != null){
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
+            user1.setPassword(encoder.encode(user.getPassword()));
         }
-        return userRepository.save(user);
+        return userRepository.save(user1);
     }
     @SneakyThrows
     public User getUserByUsername(String username) {
