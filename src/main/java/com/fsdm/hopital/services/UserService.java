@@ -6,8 +6,7 @@ import com.fsdm.hopital.exceptions.AppException;
 import com.fsdm.hopital.exceptions.ProcessingException;
 import com.fsdm.hopital.repositories.PasswordRecoveryTokenRepository;
 import com.fsdm.hopital.repositories.UserRepository;
-import com.fsdm.hopital.types.ChangePasswordRequest;
-import io.jsonwebtoken.lang.Objects;
+import com.fsdm.hopital.dto.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,10 +37,10 @@ public class UserService {
     }
     @SneakyThrows
     public User updateUser(User user){
-        Optional<User> userOptional = userRepository.findById(user.getUid());
+        Optional<User> userOptional = userRepository.findById(user.getId());
         if(userOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
         User user1 = userOptional.get();
-        user1.setUid(user.getUid());
+        user1.setId(user.getId());
         if(isSet(user.getRole())) user1.setRole(user.getRole());
         if(isSet(user.getUsername())) user1.setUsername(user.getUsername());
         if(isSet(user.getFirstName())) user1.setFirstName(user.getFirstName());
@@ -85,12 +84,11 @@ public class UserService {
     public void resetPassword(String token , String newPassword){
         Optional<PasswordRecoveryToken> recoveryToken = passwordRecoveryTokenRepository.findByToken(token);
         if(recoveryToken.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
-        Optional<User> user = userRepository.findByUsername(recoveryToken.get().getUsername());
-        if(user.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
-        User user1 = user.get();
+        User user = recoveryToken.get().getUser();
+        if(user == null) throw new AppException(ProcessingException.USER_NOT_FOUND);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user1.setPassword(encoder.encode(newPassword));
-        userRepository.save(user1);
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
     }
 
 }

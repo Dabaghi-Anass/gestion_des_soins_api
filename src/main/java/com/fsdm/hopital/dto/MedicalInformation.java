@@ -1,4 +1,4 @@
-package com.fsdm.hopital.types;
+package com.fsdm.hopital.dto;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

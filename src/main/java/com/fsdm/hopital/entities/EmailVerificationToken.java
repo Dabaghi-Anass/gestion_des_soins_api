@@ -11,11 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmailVerificationToken {
-    @Id
-    @SequenceGenerator(name = "email_verification_token_seq" , sequenceName = "email_verification_token_seq" , allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_verification_token_seq")
-    private Long id;
+public class EmailVerificationToken extends BaseEntity {
     private String token;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uid" ,

@@ -1,17 +1,14 @@
 package com.fsdm.hopital.controllers;
 
 import com.fsdm.hopital.auth.jwt.JwtUtils;
-import com.fsdm.hopital.entities.Profile;
 import com.fsdm.hopital.entities.User;
 import com.fsdm.hopital.services.AuthService;
 import com.fsdm.hopital.services.ProfileService;
 import com.fsdm.hopital.services.UserService;
-import com.fsdm.hopital.types.ActionEntity;
-import com.fsdm.hopital.types.ChangePasswordRequest;
-import com.fsdm.hopital.types.JsonWebToken;
+import com.fsdm.hopital.dto.ActionEntity;
+import com.fsdm.hopital.dto.ChangePasswordRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

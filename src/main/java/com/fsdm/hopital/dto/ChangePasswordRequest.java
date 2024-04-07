@@ -1,4 +1,4 @@
-package com.fsdm.hopital.types;
+package com.fsdm.hopital.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ActionEntity {
-    private String actionName;
-    private String actionDescription;
-    private boolean isDone;
+public class ChangePasswordRequest {
+    private String username;
+    private String oldPassword;
+    private String newPassword;
 }

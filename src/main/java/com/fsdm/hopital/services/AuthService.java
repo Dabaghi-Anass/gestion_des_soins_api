@@ -43,7 +43,7 @@ public class AuthService {
         String token = UUID.randomUUID().toString();
         PasswordRecoveryToken tokenE = new PasswordRecoveryToken();
         tokenE.setToken(token);
-        tokenE.setUsername(user.getUsername());
+        tokenE.setUser(user);
         PasswordRecoveryToken tokenFromDb = passwordRecoveryTokenRepository.save(tokenE);
         String link = emailService.getServerLink() + "/api/auth/reset-password?token="+tokenFromDb.getToken();
         String body = "Bonjour Mr (Mlle) " + user.getFirstName() + "\n" +

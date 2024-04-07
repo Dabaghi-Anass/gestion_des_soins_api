@@ -11,10 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Speciality {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long speciality_id;
+public class Speciality extends BaseEntity {
     private String name;
     private String category;
     @ManyToMany

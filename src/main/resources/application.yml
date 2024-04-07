@@ -20,7 +20,14 @@ spring:
           auth: true
           starttls:
             enable: true
+sftp :
+  port : 22
+  host : localhost
+  username : anass
+  password : anass
+  remoteImagesDirectory : /media
+  remoteFilesDirectory : /media
+  localDirectory : /uploads
 
 server:
   port: 8070
-

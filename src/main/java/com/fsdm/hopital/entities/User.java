@@ -19,11 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder(builderClassName = "UserBuilder")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User implements Serializable{
-    @Id
-    @SequenceGenerator(name = "users_seq" , sequenceName = "users_seq" , allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "users_seq")
-    private Long uid;
+public class User extends BaseEntity{
     @Email
     @NotBlank
     @Column(unique = true)
@@ -37,10 +33,4 @@ public class User implements Serializable{
     @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id" , foreignKey = @ForeignKey(name = "FK_USER_PROFILE"))
     private Profile profile;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-    }
 }

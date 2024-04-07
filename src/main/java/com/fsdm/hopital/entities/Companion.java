@@ -1,5 +1,4 @@
 package com.fsdm.hopital.entities;
-import com.fsdm.hopital.types.MedicalInformation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

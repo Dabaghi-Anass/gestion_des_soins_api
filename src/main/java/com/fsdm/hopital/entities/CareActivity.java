@@ -13,9 +13,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CareActivity {
-    @Id
-    private Long id;
+public class CareActivity extends BaseEntity {
     private String title;
     private String description;
     private Date date;

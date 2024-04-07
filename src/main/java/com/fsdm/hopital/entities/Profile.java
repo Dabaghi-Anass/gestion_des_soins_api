@@ -15,12 +15,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Profile {
-    @Id
-    @Column(name = "profile_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Profile extends BaseEntity{
     private String address;
+    @Column(length = 1000)
     private String imageUrl;
     private Gender gender;
     @Temporal(TemporalType.DATE)
