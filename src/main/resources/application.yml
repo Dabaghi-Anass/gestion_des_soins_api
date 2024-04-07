@@ -8,14 +8,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   mail:
     host: smtp.gmail.com
     port: 587
     username: anass.debbaghi123@gmail.com
     password: wxhkrooxdflsgmik
+
     properties:
       mail:
+        debug: false
         smtp:
           auth: true
           starttls:
@@ -28,6 +30,5 @@ sftp :
   remoteImagesDirectory : /media
   remoteFilesDirectory : /media
   localDirectory : /uploads
-
 server:
   port: 8070

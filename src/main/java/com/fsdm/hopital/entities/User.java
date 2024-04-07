@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +28,8 @@ public class User extends BaseEntity{
     private String firstName;
     private String lastName;
     private String password;
+    @OneToMany(mappedBy = "assignedTo" , fetch = FetchType.LAZY)
+    private List<Appointment> schedule;
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isVerified;

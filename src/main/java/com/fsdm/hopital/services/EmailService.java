@@ -12,6 +12,9 @@ import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -39,6 +42,7 @@ public class EmailService {
         sendEmail(email, "Verify Your Register", username, body);
     }
     public void sendEmail(String toEmail, String subject,String username, String body){
+        Logger.getLogger("javax.mail").setLevel(Level.OFF);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(toEmail);

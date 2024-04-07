@@ -11,7 +11,6 @@ import java.util.logging.*;
 @SpringBootApplication
 public class HopitalApplication {
 	public static void main(String[] args) {
-		Logger.getLogger("javax.mail").setLevel(Level.OFF);
 		SpringApplication.run(HopitalApplication.class, args);
 	}
 }

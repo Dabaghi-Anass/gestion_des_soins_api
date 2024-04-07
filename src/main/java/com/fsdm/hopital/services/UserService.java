@@ -7,6 +7,7 @@ import com.fsdm.hopital.exceptions.ProcessingException;
 import com.fsdm.hopital.repositories.PasswordRecoveryTokenRepository;
 import com.fsdm.hopital.repositories.UserRepository;
 import com.fsdm.hopital.dto.ChangePasswordRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordRecoveryTokenRepository passwordRecoveryTokenRepository;
@@ -90,5 +92,11 @@ public class UserService {
         user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
     }
-
+    @SneakyThrows
+    @Transactional
+    public User getUserById(Long id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
+        return user.get();
+    }
 }

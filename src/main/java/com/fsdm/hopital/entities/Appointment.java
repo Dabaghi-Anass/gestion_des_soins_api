@@ -27,6 +27,6 @@ public class Appointment extends BaseEntity {
     private String description;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Patient patient;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User assignedTo;
 }

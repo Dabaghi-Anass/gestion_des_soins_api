@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "patients")
 @AllArgsConstructor
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name = "uid")
 public class Patient extends User{
     @Embedded
     private MedicalInformation medicalInformation;
