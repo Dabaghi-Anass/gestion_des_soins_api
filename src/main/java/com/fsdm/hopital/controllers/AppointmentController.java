@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,10 +19,9 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     private final AppointmentRepository appointmentRepository;
     @PostMapping("/create")
-    public String createAppointment(@RequestBody AppointmentDTO appointment) {
+    public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentDTO appointment) {
         Appointment savedAppointment = appointmentService.createAppointment(appointment);
-//        return ResponseEntity.ok(savedAppointment);
-        return "Appointment created successfully";
+        return ResponseEntity.ok(savedAppointment);
     }
     @GetMapping("/{id}")
     public Appointment getAppointment(@PathVariable Long id) {
@@ -30,6 +30,10 @@ public class AppointmentController {
     @GetMapping
     public List<Appointment> getAppointmentsOfUser(@RequestParam("userId") Long id) {
         return appointmentService.getAllUserAppointments(id);
+    }
+    @GetMapping("/user-schedule/{user_id}")
+    public List<Date> userSchedule(@PathVariable Long user_id){
+        return appointmentService.getSchedule(user_id);
     }
     @DeleteMapping("/{id}")
     public ActionEntity deleteAppointment(@PathVariable Long id) {

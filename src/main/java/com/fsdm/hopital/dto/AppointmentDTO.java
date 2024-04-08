@@ -23,4 +23,5 @@ public class AppointmentDTO extends BaseEntity {
     private String description;
     private Long patientId;
     private Long assignedToId;
+    private int duration;
 }
