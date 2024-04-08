@@ -16,7 +16,6 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleException(Exception e) {
-        e.printStackTrace();
         return ResponseEntity
                 .badRequest()
                 .body(new ErrorResponseDTO(ProcessingException.INTERNAL_ERROR , e.getMessage()));
