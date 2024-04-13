@@ -1,6 +1,6 @@
 package com.fsdm.hopital.types;
 
-public enum  AppointementStatus {
+public enum AppointmentStatus {
     DONE,
     SCHEDULED,
     CANCELED,

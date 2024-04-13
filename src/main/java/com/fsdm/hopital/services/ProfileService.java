@@ -29,6 +29,8 @@ public class ProfileService {
              profileToSave.setGender(profile.getGender());
         if(isSet(profile.getBirthDate()))
              profileToSave.setBirthDate(profile.getBirthDate());
+        if(isSet(profile.getPhoneNumber()))
+             profileToSave.setPhoneNumber(profile.getPhoneNumber());
         return profileRepository.save(profileToSave);
     }
     public Profile createProfile(Profile profile){

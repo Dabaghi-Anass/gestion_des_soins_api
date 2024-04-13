@@ -1,6 +1,6 @@
 package com.fsdm.hopital.entities;
 
-import com.fsdm.hopital.types.AppointementStatus;
+import com.fsdm.hopital.types.AppointmentStatus;
 import com.fsdm.hopital.types.AppointmentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class Appointment extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     @Enumerated(EnumType.STRING)
-    private AppointementStatus status;
+    private AppointmentStatus status;
     @Enumerated(EnumType.STRING)
     private AppointmentType type;
     private String description;

@@ -22,4 +22,5 @@ public class Profile extends BaseEntity{
     private Gender gender;
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+    private String phoneNumber;
 }

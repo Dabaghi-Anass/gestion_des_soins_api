@@ -1,6 +1,7 @@
 package com.fsdm.hopital.services;
 
 import com.fsdm.hopital.entities.PasswordRecoveryToken;
+import com.fsdm.hopital.entities.Profile;
 import com.fsdm.hopital.entities.User;
 import com.fsdm.hopital.exceptions.AppException;
 import com.fsdm.hopital.exceptions.ProcessingException;
@@ -28,6 +29,7 @@ public class UserService {
         if(userFromRepo.isPresent()) throw new AppException(ProcessingException.EMAIL_ALREADY_EXISTS);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setProfile(new Profile());
         return userRepository.save(user);
     }
     public boolean isSet(Object obj){
@@ -47,6 +49,8 @@ public class UserService {
         if(isSet(user.getUsername())) user1.setUsername(user.getUsername());
         if(isSet(user.getFirstName())) user1.setFirstName(user.getFirstName());
         if(isSet(user.getLastName())) user1.setLastName(user.getLastName());
+        System.out.println("profile from request : " +user.getProfile());
+        System.out.println("profile from response : " +user1.getProfile());
         if(isSet(user.getProfile())) user1.setProfile(user.getProfile());
         if(isSet(user.getIsVerified())) user1.setIsVerified(user.getIsVerified());
         if(user.getPassword() != null){

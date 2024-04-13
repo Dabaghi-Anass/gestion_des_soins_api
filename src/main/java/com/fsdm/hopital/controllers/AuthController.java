@@ -1,6 +1,7 @@
 package com.fsdm.hopital.controllers;
 
 import com.fsdm.hopital.auth.jwt.JwtUtils;
+import com.fsdm.hopital.entities.Profile;
 import com.fsdm.hopital.entities.User;
 import com.fsdm.hopital.services.AuthService;
 import com.fsdm.hopital.services.ProfileService;
@@ -45,6 +46,17 @@ public class AuthController {
         return cookie;
     }
     @PutMapping("/user/createWithProfile")
+    public ResponseEntity<User> createUserWithProfile(@RequestBody User user){
+        User user1 = userService.updateUser(user);
+        user1.setPassword(null);
+        return ResponseEntity.ok(user1);
+    }
+    @PutMapping("/user/saveProfile")
+    public ResponseEntity<Profile> updateUserProfile(@RequestBody Profile profile){
+        Profile profile1 = profileService.updateProfile(profile);
+        return ResponseEntity.ok(profile1);
+    }
+    @PutMapping("/user/update")
     public ResponseEntity<User> updateUser(@RequestBody User user){
         User user1 = userService.updateUser(user);
         user1.setPassword(null);
