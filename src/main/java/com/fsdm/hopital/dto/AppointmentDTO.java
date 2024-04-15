@@ -1,7 +1,7 @@
 package com.fsdm.hopital.dto;
 
 import com.fsdm.hopital.entities.BaseEntity;
-import com.fsdm.hopital.types.AppointmentStatus;
+import com.fsdm.hopital.types.Status;
 import com.fsdm.hopital.types.AppointmentType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.Date;
 public class AppointmentDTO extends BaseEntity {
     private Long id;
     private Date date;
-    private AppointmentStatus status;
+    private Status status;
     private AppointmentType type;
     private String description;
     private Long patientId;
