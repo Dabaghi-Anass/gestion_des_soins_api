@@ -19,6 +19,7 @@ public class Profile extends BaseEntity{
     private String address;
     @Column(length = 1000)
     private String imageUrl;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Temporal(TemporalType.DATE)
     private Date birthDate;

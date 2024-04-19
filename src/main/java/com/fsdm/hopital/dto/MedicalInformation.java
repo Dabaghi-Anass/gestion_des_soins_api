@@ -1,26 +1,23 @@
 package com.fsdm.hopital.dto;
 
+import com.fsdm.hopital.entities.Treatment;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Embeddable
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicalInformation {
-    // Vital signs
+public class MedicalInformation implements Serializable {
     private float temperature;
-    private int bloodPressure;
-    private int heartRate;
-    private int respiratoryRate;
     private String bloodType;
-
     private String allergies;
-    private String medicalHistory; //treatment history
-    private String emergencyContact;
-    private String insuranceNumber;
-    private String insuranceCompany;
-
+    @ManyToMany
+    private List<Treatment> medicalHistory;
 }

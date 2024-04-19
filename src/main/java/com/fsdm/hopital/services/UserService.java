@@ -1,11 +1,9 @@
 package com.fsdm.hopital.services;
 
-import com.fsdm.hopital.entities.PasswordRecoveryToken;
-import com.fsdm.hopital.entities.Patient;
-import com.fsdm.hopital.entities.Profile;
-import com.fsdm.hopital.entities.User;
+import com.fsdm.hopital.entities.*;
 import com.fsdm.hopital.exceptions.AppException;
 import com.fsdm.hopital.exceptions.ProcessingException;
+import com.fsdm.hopital.repositories.CareGiverRepository;
 import com.fsdm.hopital.repositories.PasswordRecoveryTokenRepository;
 import com.fsdm.hopital.repositories.PatientRepository;
 import com.fsdm.hopital.repositories.UserRepository;
@@ -24,6 +22,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
+    private final CareGiverRepository careGiverRepository;
     private final PasswordRecoveryTokenRepository passwordRecoveryTokenRepository;
     @SneakyThrows
     public User createUser(User user){
@@ -109,5 +108,12 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
         return user.get();
+    }
+
+    @SneakyThrows
+    public CareGiver getCareGiverById(Long careGiverId) {
+        Optional<CareGiver> careGiverOptional = careGiverRepository.findById(careGiverId);
+        if(careGiverOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
+        return careGiverOptional.get();
     }
 }

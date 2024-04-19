@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientDTO extends UserDTO {
     private MedicalInformation medicalInformation;
-    private CareGiverDTO careGiver;
+    private Long careGiverId;
 }
