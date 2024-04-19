@@ -17,7 +17,7 @@ import java.util.Date;
 @Builder
 public class Profile extends BaseEntity{
     private String address;
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String imageUrl;
     private Gender gender;
     @Temporal(TemporalType.DATE)
