@@ -27,7 +27,7 @@ public class EntityToDto {
         patientDTO.setIsVerified(patient.getIsVerified());
         patientDTO.setProfile(patient.getProfile());
         patientDTO.setMedicalInformation(patient.getMedicalInformation());
-        patientDTO.setCareGiver(careGiverToCareGiverDTO(patient.getCareGiver()));
+        patientDTO.setCareGiverId(patient.getCareGiver().getId());
         return patientDTO;
     }
     public static AppointmentDTO appointmentToAppointmentDTO(Appointment appointment) {
