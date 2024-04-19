@@ -52,9 +52,6 @@ public class TreatmentsService {
         if(receiver.getMedicalInformation() == null){
            receiver.setMedicalInformation(new MedicalInformation());
         }
-        if(receiver.getMedicalInformation().getMedicalHistory() == null){
-            receiver.getMedicalInformation().setMedicalHistory(new ArrayList<>());
-        }
         Treatment treatment = Treatment.builder()
                 .response(treatmentDTO.getResponse())
                 .title(treatmentDTO.getTitle())
@@ -63,22 +60,11 @@ public class TreatmentsService {
                 .sentBy(sender)
                 .sentTo(receiver)
                 .build();
-        receiver.getMedicalInformation().getMedicalHistory().add(treatment);
         patientRepository.save(receiver);
         return treatmentRepository.save(treatment);
     }
 
     public List<Treatment> getAllTreatments(Long userId) {
-        User user = userService.getUserById(userId);
-        if(user.getRole().equals(Role.PATIENT)){
-            Patient patient = userService.getPatientById(userId);
-            if(patient.getMedicalInformation() != null){
-                return patient.getMedicalInformation().getMedicalHistory();
-            }
-            return null;
-        }
-        else{
-            return treatmentRepository.findAllByUserId(userId);
-        }
+        return treatmentRepository.findAllByUserId(userId);
     }
 }
