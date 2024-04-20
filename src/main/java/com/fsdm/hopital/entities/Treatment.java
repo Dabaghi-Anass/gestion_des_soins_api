@@ -26,6 +26,8 @@ public class Treatment extends BaseEntity{
     private Patient sentTo;
     @ManyToOne
     private User sentBy;
+    @OneToOne
+    private TreatmentRequest request;
 }
 
 

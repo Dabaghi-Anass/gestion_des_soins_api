@@ -28,8 +28,21 @@ public class TreatmentsController {
         return treatmentsService.addTreatment(treatmentDTO);
     }
     @GetMapping("/{user_id}")
-    public List<Treatment> getAllTreatments(@PathVariable Long user_id){
-        return treatmentsService.getAllTreatments(user_id);
+    public List<Treatment> getTreatments(@PathVariable Long user_id, @RequestParam Integer limit, @RequestParam Integer offset){
+        if(limit == null || offset == null)
+            return treatmentsService.getAllTreatments(user_id);
+        return treatmentsService.getTreatments(user_id,offset, limit);
     }
-
+    @GetMapping("/all/{user_id}")
+    public List<Treatment> getTreatments(@PathVariable Long user_id){
+       return treatmentsService.getAllTreatments(user_id);
+    }
+    @PutMapping("/deny/{id}")
+    public TreatmentRequest denyTreatmentRequest(@PathVariable Long id){
+        return treatmentsService.denyTreatmentRequest(id);
+    }
+    @PutMapping("/accept/{id}")
+    public TreatmentRequest acceptTreatmentRequest(@PathVariable Long id){
+        return treatmentsService.acceptTreatmentRequest(id);
+    }
 }

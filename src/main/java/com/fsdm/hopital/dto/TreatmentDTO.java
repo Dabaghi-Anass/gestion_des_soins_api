@@ -15,4 +15,5 @@ public class TreatmentDTO {
     private String title;
     private Long sentToId;
     private Long sentById;
+    private Long requestId;
 }
