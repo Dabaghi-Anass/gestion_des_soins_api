@@ -33,6 +33,10 @@ public class TreatmentsController {
             return treatmentsService.getAllTreatments(user_id);
         return treatmentsService.getTreatments(user_id,offset, limit);
     }
+    @GetMapping("/treatment/{id}")
+    public Treatment getTreatmentById(@PathVariable Long id){
+        return treatmentsService.getTreatmentById(id);
+    }
     @GetMapping("/all/{user_id}")
     public List<Treatment> getTreatments(@PathVariable Long user_id){
        return treatmentsService.getAllTreatments(user_id);

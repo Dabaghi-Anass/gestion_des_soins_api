@@ -40,6 +40,9 @@ public class JwtFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_OK);
         }else{
             String token = extractTokenFromHeaders(request);
+            if(token == null || token.isEmpty()){
+                token = extractTokenFromCookie(request);
+            }
             if (token == null) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;

@@ -86,12 +86,17 @@ public class TreatmentsService {
     public TreatmentRequest acceptTreatmentRequest(Long id){
         TreatmentRequest request = treatmentRequestRepository.findById(id)
                 .orElseThrow(() -> new AppException(ProcessingException.INVALID_OPERATON));
-        request.setStatus(Status.CONFIRMED);
+        request.setStatus(Status.PENDING);
         return treatmentRequestRepository.save(request);
     }
 
     public List<Treatment> getTreatments(Long userId,int offset, int limit) {
         Pageable pageable = PageRequest.of(offset, limit);
         return treatmentRepository.findAllByUserId(userId, pageable);
+    }
+
+    @SneakyThrows
+    public Treatment getTreatmentById(Long id) {
+        return treatmentRepository.findById(id).orElseThrow(() -> new AppException(ProcessingException.INVALID_OPERATON));
     }
 }
