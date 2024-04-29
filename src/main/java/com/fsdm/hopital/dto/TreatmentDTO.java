@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TreatmentDTO {
+    private Long id;
     private String response;
     private String review;
     private Status status;

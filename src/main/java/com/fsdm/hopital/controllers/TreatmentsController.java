@@ -27,6 +27,18 @@ public class TreatmentsController {
     public Treatment addTreatment(@RequestBody TreatmentDTO treatmentDTO){
         return treatmentsService.addTreatment(treatmentDTO);
     }
+    @DeleteMapping("/request/{id}")
+    public void deleteRequest(@PathVariable Long id){
+        treatmentsService.deleteRequest(id);
+    }
+    @PutMapping("/update-treatment")
+    public Treatment updateTreatment(@RequestBody TreatmentDTO treatmentDTO){
+        return treatmentsService.updateTreatment(treatmentDTO);
+    }
+    @GetMapping("/treatment-by-request/{id}")
+    public Treatment addTreatment(@PathVariable Long id){
+        return treatmentsService.getTreatmentByRequestId(id);
+    }
     @GetMapping("/{user_id}")
     public List<Treatment> getTreatments(@PathVariable Long user_id, @RequestParam Integer limit, @RequestParam Integer offset){
         if(limit == null || offset == null)

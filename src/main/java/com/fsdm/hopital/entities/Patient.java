@@ -15,4 +15,6 @@ public class Patient extends User{
     private MedicalInformation medicalInformation;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private CareGiver careGiver;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Companion companion;
 }

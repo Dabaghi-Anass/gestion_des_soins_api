@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Treatment extends BaseEntity{
-    @Column(length = 2000)
+    @Column(length = 10000)
     private String response;
     @Column(length = 1000)
     private String review;
@@ -26,7 +26,7 @@ public class Treatment extends BaseEntity{
     private Patient sentTo;
     @ManyToOne
     private User sentBy;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TreatmentRequest request;
 }
 

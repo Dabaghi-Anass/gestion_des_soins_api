@@ -18,4 +18,5 @@ public class MedicalInformation implements Serializable {
     private float temperature;
     private String bloodType;
     private String allergies;
+    private String condition;
 }

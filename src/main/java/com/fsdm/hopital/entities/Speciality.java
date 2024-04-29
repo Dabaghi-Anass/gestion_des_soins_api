@@ -14,11 +14,4 @@ import java.util.List;
 public class Speciality extends BaseEntity {
     private String name;
     private String category;
-    @ManyToMany
-    @JoinTable(
-            name = "doctor_speciality",
-            joinColumns = @JoinColumn(name = "doctor_id"),
-            inverseJoinColumns = @JoinColumn(name = "speciality_id")
-    )
-    private List<Doctor> doctors;
 }

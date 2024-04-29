@@ -1,0 +1,38 @@
+{
+  "properties": [
+    {
+      "name": "sftp.localDirectory",
+      "type": "java.lang.String",
+      "description": "sftp server local directory in the local machine as a cahche folder."
+    },
+    {
+      "name": "sftp.remoteFilesDirectory",
+      "type": "java.lang.String",
+      "description": "Description for sftp.remoteFilesDirectory."
+    },
+    {
+      "name": "sftp.remoteImagesDirectory",
+      "type": "java.lang.String",
+      "description": "Description for sftp.remoteImagesDirectory."
+    },
+    {
+      "name": "sftp.password",
+      "type": "java.lang.String",
+      "description": "Description for sftp.password."
+    },
+    {
+      "name": "sftp.username",
+      "type": "java.lang.String",
+      "description": "Description for sftp.username."
+    },
+    {
+      "name": "sftp.host",
+      "type": "java.lang.String",
+      "description": "Description for sftp.host."
+    },
+    {
+      "name": "sftp.port",
+      "type": "java.lang.String",
+      "description": "Description for sftp.port."
+    }
+  ] }

@@ -16,4 +16,5 @@ public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     List<Treatment> findAllByUserId(Long id);
     @Query(nativeQuery = true,value = "SELECT * FROM treatments WHERE sent_by_id = ?1 OR sent_to_id = ?1")
     List<Treatment> findAllByUserId(Long id, Pageable pageable);
+    Treatment findByRequestId(Long id);
 }

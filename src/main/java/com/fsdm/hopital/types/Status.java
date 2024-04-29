@@ -7,5 +7,6 @@ public enum Status {
     CONFIRMED,
     IN_PROGRESS,
     PENDING,
-    DENIED
+    DENIED,
+    COMPLETED_TREATMENT
 }

@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "companions")
 @AllArgsConstructor
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name = "uid")
 public class Companion extends User{
     private String relation;
-    @OneToOne
-    private Patient associatedPatient;
 }

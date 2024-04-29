@@ -60,11 +60,12 @@ public class TreatmentsService {
            receiver.setMedicalInformation(new MedicalInformation());
         }
         request.setResponded(true);
+        request.setStatus(Status.CONFIRMED);
         Treatment treatment = Treatment.builder()
                 .response(treatmentDTO.getResponse())
                 .title(treatmentDTO.getTitle())
                 .review(treatmentDTO.getReview())
-                .status(treatmentDTO.getStatus())
+                .status(Status.CONFIRMED)
                 .sentBy(sender)
                 .sentTo(receiver)
                 .request(request)
@@ -98,5 +99,28 @@ public class TreatmentsService {
     @SneakyThrows
     public Treatment getTreatmentById(Long id) {
         return treatmentRepository.findById(id).orElseThrow(() -> new AppException(ProcessingException.INVALID_OPERATON));
+    }
+
+    public Treatment getTreatmentByRequestId(Long id) {
+        return treatmentRepository.findByRequestId(id);
+    }
+    @SneakyThrows
+    public Treatment updateTreatment(TreatmentDTO treatmentDTO) {
+        Treatment treatment = treatmentRepository.findById(treatmentDTO.getId())
+                .orElseThrow(() -> new AppException(ProcessingException.INVALID_OPERATON));
+        if(treatmentDTO.getReview() != null)
+            treatment.setReview(treatmentDTO.getReview());
+        if(treatmentDTO.getResponse() != null)
+            treatment.setResponse(treatmentDTO.getResponse());
+        if(treatmentDTO.getStatus() != null)
+            treatment.setStatus(treatmentDTO.getStatus());
+        if(treatmentDTO.getTitle() != null)
+            treatment.setTitle(treatmentDTO.getTitle());
+        return treatmentRepository.save(treatment);
+    }
+    public void deleteRequest(Long id) {
+        Treatment treatment = getTreatmentByRequestId(id);
+        treatmentRepository.deleteById(treatment.getId());
+        treatmentRequestRepository.deleteById(id);
     }
 }

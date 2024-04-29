@@ -83,9 +83,6 @@ public class EntityToDto {
         careGiverDTO.setIsVerified(careGiver.getIsVerified());
         careGiverDTO.setProfile(careGiver.getProfile());
         careGiverDTO.setActivities(careGiver.getActivities());
-        List<Patient> patients = careGiver.getAssociatedPatients();
-        List<PatientDTO> associatedPatientsDto = patients.stream().map(EntityToDto::patientToPatientDTO).toList();
-        careGiverDTO.setAssociatedPatients(associatedPatientsDto);
         return careGiverDTO;
     }
 }
