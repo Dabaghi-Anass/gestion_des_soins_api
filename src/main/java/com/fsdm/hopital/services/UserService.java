@@ -3,11 +3,9 @@ package com.fsdm.hopital.services;
 import com.fsdm.hopital.entities.*;
 import com.fsdm.hopital.exceptions.AppException;
 import com.fsdm.hopital.exceptions.ProcessingException;
-import com.fsdm.hopital.repositories.CareGiverRepository;
-import com.fsdm.hopital.repositories.PasswordRecoveryTokenRepository;
-import com.fsdm.hopital.repositories.PatientRepository;
-import com.fsdm.hopital.repositories.UserRepository;
+import com.fsdm.hopital.repositories.*;
 import com.fsdm.hopital.dto.ChangePasswordRequest;
+import com.fsdm.hopital.types.Role;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,6 +21,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
     private final CareGiverRepository careGiverRepository;
+    private final NurseRepository nurseRepository;
+    private final CompanionRepository companionRepository;
+    private final DoctorRepository doctorRepository;
     private final PasswordRecoveryTokenRepository passwordRecoveryTokenRepository;
     @SneakyThrows
     public User createUser(User user){
@@ -38,7 +39,7 @@ public class UserService {
         return obj != null;
     }
     public User veriyUser(User user){
-         user.setIsVerified(true);
+        user.setIsVerified(true);
         return userRepository.save(user);
     }
     @SneakyThrows
@@ -55,8 +56,6 @@ public class UserService {
         if(isSet(user.getUsername())) user1.setUsername(user.getUsername());
         if(isSet(user.getFirstName())) user1.setFirstName(user.getFirstName());
         if(isSet(user.getLastName())) user1.setLastName(user.getLastName());
-        System.out.println("profile from request : " +user.getProfile());
-        System.out.println("profile from response : " +user1.getProfile());
         if(isSet(user.getProfile())) user1.setProfile(user.getProfile());
         if(isSet(user.getIsVerified())) user1.setIsVerified(user.getIsVerified());
         if(user.getPassword() != null){
@@ -115,5 +114,24 @@ public class UserService {
         Optional<CareGiver> careGiverOptional = careGiverRepository.findById(careGiverId);
         if(careGiverOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
         return careGiverOptional.get();
+    }
+
+    @SneakyThrows
+    public User updateUserRole(User user) {
+        if(user.getId() == null) throw new AppException(ProcessingException.INVALID_OPERATON);
+        User userFromDb = getUserById(user.getId());
+        userFromDb.setRole(user.getRole());
+        if(user.getRole().equals(Role.PATIENT)){
+            patientRepository.saveWithId(userFromDb.getId());
+        }else if(user.getRole().equals(Role.CAREGIVER)){
+            careGiverRepository.saveWithId(userFromDb.getId());
+        } else if (user.getRole().equals(Role.DOCTOR)) {
+            doctorRepository.saveWithId(userFromDb.getId());
+        } else if (user.getRole().equals(Role.NURSE)) {
+            nurseRepository.saveWithId(userFromDb.getId());
+        } else if(user.getRole().equals(Role.COMPANION)){
+            companionRepository.saveWithId(userFromDb.getId());
+        }
+        return userRepository.save(userFromDb);
     }
 }

@@ -22,7 +22,6 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntity{
     @Email
-    @NotBlank
     @Column(unique = true)
     private String username;
     private String firstName;

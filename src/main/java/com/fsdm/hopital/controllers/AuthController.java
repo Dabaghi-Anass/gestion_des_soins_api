@@ -62,6 +62,12 @@ public class AuthController {
         user1.setPassword(null);
         return ResponseEntity.ok(user1);
     }
+    @PutMapping("/user/update-role")
+    public ResponseEntity<User> updateUserRole(@RequestBody User user){
+        User user1 = userService.updateUserRole(user);
+        user1.setPassword(null);
+        return ResponseEntity.ok(user1);
+    }
     @GetMapping("/isVerified")
     public ResponseEntity<ActionEntity> isEmailVerified(@RequestHeader("x-auth") String token) {
         boolean valid = jwtUtils.validateTokenSignature(token);

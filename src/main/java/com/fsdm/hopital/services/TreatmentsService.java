@@ -118,6 +118,7 @@ public class TreatmentsService {
             treatment.setTitle(treatmentDTO.getTitle());
         return treatmentRepository.save(treatment);
     }
+
     public void deleteRequest(Long id) {
         Treatment treatment = getTreatmentByRequestId(id);
         treatmentRepository.deleteById(treatment.getId());
