@@ -73,7 +73,7 @@ public class AppointmentService {
         if(appointment.getDate() != null) appointment1.setDate(appointment.getDate());
         if(appointment.getStatus() != null) appointment1.setStatus(appointment.getStatus());
         if(appointment.getType() != null) appointment1.setType(appointment.getType());
-        if(appointment.getDescription() != null) appointment1.setDescription(appointment.getDescription());
+        if(appointment.getReason() != null) appointment1.setReason(appointment.getReason());
         return appointmentRepository.save(appointment1);
     }
     public List<Date> getSchedule(Long id){

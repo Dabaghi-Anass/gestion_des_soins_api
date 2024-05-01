@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -61,6 +62,12 @@ public class AuthController {
         User user1 = userService.updateUser(user);
         user1.setPassword(null);
         return ResponseEntity.ok(user1);
+    }
+    @GetMapping("/all-users")
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> users = userService.getAllUsers();
+        users.forEach(u -> u.setPassword(null));
+        return ResponseEntity.ok(users);
     }
     @PutMapping("/user/update-role")
     public ResponseEntity<User> updateUserRole(@RequestBody User user){

@@ -24,7 +24,8 @@ public class Appointment extends BaseEntity {
     private Status status;
     @Enumerated(EnumType.STRING)
     private AppointmentType type;
-    private String description;
+    @Column(length = 3000)
+    private String reason;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Patient patient;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

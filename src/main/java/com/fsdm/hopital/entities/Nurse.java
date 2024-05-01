@@ -18,6 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Nurse extends User{
+    @Column(length = 3000)
+    private String qualities;
     @OneToMany(mappedBy = "assignedTo")
-    List<CareActivity> activities;
+    private List<CareActivity> activities;
 }

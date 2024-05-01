@@ -37,7 +37,7 @@ public class EntityToDto {
         appointmentDTO.setDate(appointment.getDate());
         appointmentDTO.setStatus(appointment.getStatus());
         appointmentDTO.setType(appointment.getType());
-        appointmentDTO.setDescription(appointment.getDescription());
+        appointmentDTO.setReason(appointment.getReason());
         appointmentDTO.setPatientId(appointment.getPatient().getId());
         appointmentDTO.setAssignedToId(appointment.getAssignedTo().getId());
         appointmentDTO.setCreationDate(appointment.getCreationDate());
@@ -50,7 +50,7 @@ public class EntityToDto {
         appointment.setDate(appointmentDTO.getDate());
         appointment.setStatus(appointmentDTO.getStatus());
         appointment.setType(appointmentDTO.getType());
-        appointment.setDescription(appointmentDTO.getDescription());
+        appointment.setReason(appointmentDTO.getReason());
         Patient patient = patientsService.getPatientById(appointmentDTO.getPatientId());
         User user = userService.getUserById(appointmentDTO.getAssignedToId());
         appointment.setPatient(patient);

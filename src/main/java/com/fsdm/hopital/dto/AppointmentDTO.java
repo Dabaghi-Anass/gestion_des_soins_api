@@ -17,7 +17,7 @@ public class AppointmentDTO extends BaseEntity {
     private Date date;
     private Status status;
     private AppointmentType type;
-    private String description;
+    private String reason;
     private Long patientId;
     private Long assignedToId;
     private int duration;
