@@ -2,5 +2,12 @@ package com.fsdm.hopital.types;
 
 
 public enum AppointmentType {
-    Consultation, FollowUp, Procedure
+    Procedure,
+    Consultation,
+    Surgery,
+    Therapy,
+    Diagnostic,
+    FollowUp,
+    Emergency,
+    Other
 }

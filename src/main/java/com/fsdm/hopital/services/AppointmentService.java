@@ -3,21 +3,18 @@ package com.fsdm.hopital.services;
 import com.fsdm.hopital.dto.AppointmentDTO;
 import com.fsdm.hopital.dto.EntityToDto;
 import com.fsdm.hopital.entities.Appointment;
-import com.fsdm.hopital.entities.Patient;
-import com.fsdm.hopital.entities.User;
 import com.fsdm.hopital.exceptions.AppException;
 import com.fsdm.hopital.exceptions.ProcessingException;
 import com.fsdm.hopital.repositories.AppointmentRepository;
-import com.fsdm.hopital.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -48,8 +45,8 @@ public class AppointmentService {
     boolean appointmentTaken(AppointmentDTO appointment){
         Long userId = appointment.getAssignedToId();
         Long  patientId = appointment.getPatientId();
-        List<Appointment> userAppointments = getAllUserAppointments(userId); //doctor or nurse
-        List<Appointment> patientAppointments = getAllUserAppointments(patientId); //patient
+        List<Appointment> userAppointments = getAllUserAppointments(userId, 0,0); //doctor or nurse
+        List<Appointment> patientAppointments = getAllUserAppointments(patientId, 0,0); //patient
         if(userAppointments != null)
             if(containsOverlap(userAppointments, appointment)) return true;
         if(patientAppointments != null)
@@ -77,7 +74,7 @@ public class AppointmentService {
         return appointmentRepository.save(appointment1);
     }
     public List<Date> getSchedule(Long id){
-        return getAllUserAppointments(id).stream().map(Appointment::getDate).toList();
+        return getAllUserAppointments(id, 0,0).stream().map(Appointment::getDate).toList();
     }
     public void deleteAppointment(Long id){
         appointmentRepository.deleteById(id);
@@ -88,8 +85,12 @@ public class AppointmentService {
                 .findById(id)
                 .orElseThrow(() -> new AppException(ProcessingException.APPOINTMENT_NOT_FOUND));
     }
-    public List<Appointment> getAllUserAppointments(Long user_id){
-        return appointmentRepository.findAllByUserId(user_id);
+    public List<Appointment> getAllUserAppointments(Long user_id, int offset, int limit){
+        if(limit == 0 && offset == 0) {
+            return appointmentRepository.findAllByUserId(user_id);
+        }
+        Pageable page = PageRequest.of(offset,limit);
+        return appointmentRepository.findAllByUserId(user_id, page);
     }
 
     public void deleteAllUserAppointments(Long user_id) {

@@ -27,9 +27,13 @@ public class AppointmentController {
     public Appointment getAppointment(@PathVariable Long id) {
         return appointmentService.getAppointmentById(id);
     }
+    record AppointmentsResponse(List<Appointment> appointments, boolean hasNext){}
     @GetMapping
-    public List<Appointment> getAppointmentsOfUser(@RequestParam("userId") Long id) {
-        return appointmentService.getAllUserAppointments(id);
+    public AppointmentsResponse getAppointmentsOfUser(@RequestParam("userId") Long id,
+                                                      @RequestParam(name="offset") int offset,
+                                                      @RequestParam(name="limit") int limit) {
+        List<Appointment> appointments = appointmentService.getAllUserAppointments(id, offset,limit);
+        return new AppointmentsResponse(appointments, appointments.size() == limit);
     }
     @GetMapping("/user-schedule/{user_id}")
     public List<Date> userSchedule(@PathVariable Long user_id){
