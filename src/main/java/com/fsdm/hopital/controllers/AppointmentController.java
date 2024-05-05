@@ -44,14 +44,34 @@ public class AppointmentController {
         appointmentService.deleteAppointment(id);
         return new ActionEntity("DELETE_APPOINTMENT","Appointment deleted successfully", true);
     }
-    @PutMapping("/update/{id}")
-    public ActionEntity updateAppointment(@PathVariable Long id, @RequestBody AppointmentDTO appointment) {
+    @PutMapping("/update")
+    public ActionEntity updateAppointment(@RequestBody AppointmentDTO appointment) {
         appointmentService.updateAppointment(appointment);
         return new ActionEntity("UPDATE_APPOINTMENT","Appointment updated successfully", true);
     }
+    @PutMapping("/accept/{id}")
+    public Appointment acceptAppointment(@PathVariable Long id) {
+       return  appointmentService.acceptAppointment(id);
+    }
+    @PutMapping("/reject/{id}")
+    public Appointment rejectAppointment(@PathVariable Long id) {
+        return  appointmentService.rejectAppointment(id);
+    }
+    @PutMapping("/cancel/{id}")
+    public Appointment cancelAppointment(@PathVariable Long id) {
+        return appointmentService.cancelAppointment(id);
+    }
+    @PutMapping("/complete/{id}")
+    public Appointment completeAppointment(@PathVariable Long id) {
+        return appointmentService.completeAppointment(id);
+    }
+     @PutMapping("/uncomplete/{id}")
+        public Appointment unCompleteAppointment(@PathVariable Long id) {
+            return appointmentService.unCompleteAppointment(id);
+        }
+
     @DeleteMapping("/all/{userId}")
-    public ActionEntity deleteAllAppointmentsOfUser(@PathVariable Long userId) {
+    public void deleteAllAppointmentsOfUser(@PathVariable Long userId) {
         appointmentService.deleteAllUserAppointments(userId);
-        return new ActionEntity("DELETE_ALL_APPOINTMENTS","All appointments deleted successfully", true);
     }
 }

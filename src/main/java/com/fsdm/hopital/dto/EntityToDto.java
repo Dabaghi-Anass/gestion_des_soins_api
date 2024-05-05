@@ -56,6 +56,7 @@ public class EntityToDto {
         appointment.setPatient(patient);
         appointment.setAssignedTo(user);
         appointment.setCreationDate(appointmentDTO.getCreationDate());
+        appointment.setDuration(appointmentDTO.getDuration());
         return appointment;
     }
     public static UserDTO userToUserDTO(User user) {
