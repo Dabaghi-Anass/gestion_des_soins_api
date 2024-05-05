@@ -29,7 +29,7 @@ public class CareActivityController {
         public CareActivity getCareActivity(@PathVariable Long id) {
             return careActivityService.getCareActivityById(id);
         }
-        record CareActivityResponse(List<CareActivity> appointments, boolean hasNext){}
+        public record CareActivityResponse(List<CareActivity> activities, boolean hasNext){}
         @GetMapping
         public CareActivityResponse getCareActivityOfUser(@RequestParam("userId") Long id,
                                                           @RequestParam(name="offset") int offset,

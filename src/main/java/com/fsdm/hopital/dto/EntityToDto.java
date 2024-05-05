@@ -80,7 +80,6 @@ public class EntityToDto {
         careGiverDTO.setRole(careGiver.getRole());
         careGiverDTO.setIsVerified(careGiver.getIsVerified());
         careGiverDTO.setProfile(careGiver.getProfile());
-        careGiverDTO.setActivities(careGiver.getActivities());
         return careGiverDTO;
     }
 

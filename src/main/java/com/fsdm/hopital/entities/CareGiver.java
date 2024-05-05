@@ -14,8 +14,6 @@ import java.util.List;
 @Data
 @Table(name = "care_givers")
 @AllArgsConstructor
-@NoArgsConstructor
 public class CareGiver extends User {
-    @OneToMany(mappedBy = "caregiver")
-    List<CareActivity> activities;
+
 }
