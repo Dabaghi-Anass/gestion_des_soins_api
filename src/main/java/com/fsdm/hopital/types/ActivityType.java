@@ -1,7 +1,10 @@
 package com.fsdm.hopital.types;
 
 public enum ActivityType {
-    CARE,
-    HEALING,
-    APPOINTMENT,
+    SOINS,
+    GUERISON,
+    BAIGNADE,
+    SOCIALIZATION,
+    EXERCICE,
+
 }

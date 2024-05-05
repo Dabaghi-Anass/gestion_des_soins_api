@@ -1,9 +1,6 @@
 package com.fsdm.hopital.dto;
 
-import com.fsdm.hopital.entities.Appointment;
-import com.fsdm.hopital.entities.CareGiver;
-import com.fsdm.hopital.entities.Patient;
-import com.fsdm.hopital.entities.User;
+import com.fsdm.hopital.entities.*;
 import com.fsdm.hopital.services.PatientsService;
 import com.fsdm.hopital.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -85,5 +82,21 @@ public class EntityToDto {
         careGiverDTO.setProfile(careGiver.getProfile());
         careGiverDTO.setActivities(careGiver.getActivities());
         return careGiverDTO;
+    }
+
+    public static CareActivity careActivityDTOToCareActivity(CareActivityDTO careActivity, PatientsService patientsService, UserService userService) {
+        if(careActivity == null) return null;
+        CareActivity careActivity1 = new CareActivity();
+        careActivity1.setId(careActivity.getId());
+        careActivity1.setDate(careActivity.getDate());
+        careActivity1.setStatus(careActivity.getStatus());
+        careActivity1.setType(careActivity.getType());
+        careActivity1.setDescription(careActivity.getDescription());
+        careActivity1.setDuration(careActivity.getDuration());
+        Patient patient = patientsService.getPatientById(careActivity.getPatientId());
+        User user = userService.getUserById(careActivity.getCaregiverId());
+        careActivity1.setPatient(patient);
+        careActivity1.setCaregiver((CareGiver) user);
+        return careActivity1;
     }
 }

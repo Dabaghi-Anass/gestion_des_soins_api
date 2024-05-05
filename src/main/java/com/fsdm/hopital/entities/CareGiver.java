@@ -16,6 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CareGiver extends User {
-    @OneToMany(mappedBy = "assignedTo")
+    @OneToMany(mappedBy = "caregiver")
     List<CareActivity> activities;
 }

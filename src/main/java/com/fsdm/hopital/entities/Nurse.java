@@ -20,6 +20,4 @@ import java.util.List;
 public class Nurse extends User{
     @Column(length = 3000)
     private String qualities;
-    @OneToMany(mappedBy = "assignedTo")
-    private List<CareActivity> activities;
 }
