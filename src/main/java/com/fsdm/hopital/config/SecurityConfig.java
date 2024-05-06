@@ -45,12 +45,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                 )
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
-//        http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
         return http.build();
     }
     @Bean
     public WebSecurityCustomizer ignoringCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/auth/**");
+        return (web) -> web.ignoring().requestMatchers("/api/auth/**","/media/**");
     }
 
     @Bean

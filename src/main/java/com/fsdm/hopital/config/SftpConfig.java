@@ -25,6 +25,10 @@ public class SftpConfig {
     private String user;
     @Value("${sftp.password}")
     private String password;
+    @Value("${sftp.remoteFilesDirectory}")
+    private String remoteFilesDirectory;
+    @Value("${sftp.remoteImagesDirectory}")
+    private String remoteImagesDirectory;
 
     @Bean
     @SneakyThrows
@@ -34,9 +38,7 @@ public class SftpConfig {
         ftpClient.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 
         try {
-
             ftpClient.connect(host, port);
-
             int reply = ftpClient.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {
                 ftpClient.disconnect();

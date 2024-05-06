@@ -19,7 +19,8 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
-    private final RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/**/**");
+    private final RequestMatcher authPath = new AntPathRequestMatcher("/api/**/**");
+    private final RequestMatcher mediaPath = new AntPathRequestMatcher("/media/**/**");
 
     @Override
     @SneakyThrows
@@ -27,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) {
-        if (this.ignoredPaths.matches(request)) {
+        if (authPath.matches(request) || mediaPath.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }
