@@ -26,13 +26,13 @@ spring:
           starttls:
             enable: true
 sftp :
-  port : 22
+  port : 21
   host : localhost
   username : anass
-  password : anass
-  remoteImagesDirectory : /media
-  remoteFilesDirectory : /media
-  localDirectory : /uploads
+  password : Anassking1
+  remoteImagesDirectory : images/
+  remoteFilesDirectory : files/
+  localDirectory : uploads/
 server:
   port: 8070
 #  address: 192.168.1.116

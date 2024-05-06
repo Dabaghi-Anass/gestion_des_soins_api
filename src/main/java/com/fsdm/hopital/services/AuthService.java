@@ -36,8 +36,8 @@ public class AuthService {
 //        user.setIsVerified(false);
         user.setIsVerified(true);
         User userFromDb = userService.createUser(user);
-//        EmailVerificationToken tokenFromDb = tokenService.saveToken(generateEmailVToken(userFromDb));
-//        emailService.sendVerificationEmail(user.getUsername(), user.getFirstName(), tokenFromDb.getToken());
+        EmailVerificationToken tokenFromDb = tokenService.saveToken(generateEmailVToken(userFromDb));
+        emailService.sendVerificationEmail(user.getUsername(), user.getFirstName(), tokenFromDb.getToken());
         return userFromDb;
     }
     public void sendPasswordRetrieveLink(User user){
