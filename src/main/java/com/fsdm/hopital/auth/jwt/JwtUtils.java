@@ -1,6 +1,7 @@
 package com.fsdm.hopital.auth.jwt;
 
 import com.fsdm.hopital.entities.User;
+import com.fsdm.hopital.services.UserService;
 import com.fsdm.hopital.types.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +18,7 @@ import java.util.function.Function;
 @Getter
 @RequiredArgsConstructor
 public class JwtUtils {
-
+    private final UserService userService;
     private String signingKey =  "qwertyuiopasdfghjklzxcvbnm123456";
     private int expiration = 604_800_000;
     public String generateToken(User user) {
@@ -63,5 +64,9 @@ public class JwtUtils {
         return Jwts.parser()
                 .setSigningKey(signingKey.getBytes())
                 .isSigned(token) && !isTokenExpired(token);
+    }
+    public User extractUserFromJwt(String token){
+        String username = extractUserName(token);
+        return userService.getUserByUsername(username);
     }
 }

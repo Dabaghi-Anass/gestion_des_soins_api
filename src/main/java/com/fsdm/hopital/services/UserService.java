@@ -52,12 +52,10 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(user.getId());
         if(userOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
         User user1 = userOptional.get();
-        user1.setId(user.getId());
         if(isSet(user.getRole())) user1.setRole(user.getRole());
         if(isSet(user.getUsername())) user1.setUsername(user.getUsername());
         if(isSet(user.getFirstName())) user1.setFirstName(user.getFirstName());
         if(isSet(user.getLastName())) user1.setLastName(user.getLastName());
-        if(isSet(user.getProfile())) user1.setProfile(user.getProfile());
         if(isSet(user.getIsVerified())) user1.setIsVerified(user.getIsVerified());
         if(user.getPassword() != null){
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -135,6 +133,7 @@ public class UserService {
         }
         return userRepository.save(userFromDb);
     }
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();

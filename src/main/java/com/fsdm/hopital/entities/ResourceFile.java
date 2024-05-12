@@ -14,8 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResourceFile extends BaseEntity{
     String name;
+    String originalName;
     String contentType;
     String url;
+    double size;
     @ManyToOne
     User owner;
+    @ManyToOne
+    User creator;
 }

@@ -35,6 +35,13 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .exposedHeaders("x-auth")
                 .maxAge(3600);
+        registry.addMapping("/media/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .exposedHeaders("x-auth")
+                .maxAge(3600);
+
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

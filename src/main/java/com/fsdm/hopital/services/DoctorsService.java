@@ -56,5 +56,8 @@ public class DoctorsService {
         }
         return doctorRepository.save(doctor);
     }
+    public List<Doctor> getAllDoctors(){
+        return doctorRepository.findAll();
+    }
 
 }

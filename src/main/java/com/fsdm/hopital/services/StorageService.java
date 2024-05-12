@@ -11,6 +11,7 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.apache.commons.net.ftp.FTP;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 
 @Service
@@ -33,53 +36,51 @@ public class StorageService {
     private String remoteDirectory;
     @Value("${server.port:8070}")
     private String serverPort;
-    public static boolean isDirectoryExists(FTPClient ftpClient, String directoryPath) {
-        boolean isExist = false;
-        try{
-            if (ftpClient.changeWorkingDirectory(directoryPath)) {
-                int returnCode = ftpClient.getReplyCode();
-                if (FTPReply.isPositiveCompletion(returnCode)) {
-                    isExist = true;
-                }
-            }
-        } catch (IOException e){
-            isExist = false;
-        }
-
-        return isExist;
-        //hello world
-    }
-    public String uploadFile(MultipartFile file, String userDirectory){
+    public String uploadFile(MultipartFile file){
         try{
             var fileUniqueName = System.currentTimeMillis() +file.getOriginalFilename();
-            var remoteFileName= fileUniqueName;
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            boolean status = ftpClient.appendFile(remoteFileName, file.getInputStream());
+            boolean status = ftpClient.appendFile(fileUniqueName, file.getInputStream());
             if(!status) throw new AppException(ProcessingException.INVALID_OPERATON);
             return fileUniqueName;
         }catch (Exception e){
            return null;
         }
     }
+    public String uploadImage(MultipartFile file){
+        try{
+            var fileUniqueName = System.currentTimeMillis() +file.getOriginalFilename();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            boolean status = ftpClient.appendFile(fileUniqueName, file.getInputStream());
+            if(!status) throw new AppException(ProcessingException.INVALID_OPERATON);
+            return getImageDownloadLink(fileUniqueName);
+        }catch (Exception e){
+            return null;
+        }
+    }
     @SneakyThrows
     public Resource downloadFile(String fileName){
-        try{
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            ftpClient.retrieveFile(fileName, new FileOutputStream(fileName));
-            return new FileSystemResource(fileName);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+        File tempFile = File.createTempFile("temp" + UUID.randomUUID(), null);
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            ftpClient.retrieveFile(fileName, fos);
         }
-        return null;
+        byte[] fileBytes = Files.readAllBytes(tempFile.toPath());
+        Resource resource = new ByteArrayResource(fileBytes);
+        tempFile.delete();
+        return resource;
     }
 
-    public ResourceFile saveFileMetaData(String fileName, String contentType,Long ownerId) {
+    public ResourceFile saveFileMetaData(String fileName,String originalName, String contentType,Long ownerId,User creator,double size) {
         User owner = userService.getUserById(ownerId);
         ResourceFile resourceFile = new ResourceFile();
         resourceFile.setName(fileName);
+        resourceFile.setOriginalName(originalName);
         resourceFile.setContentType(contentType);
         resourceFile.setUrl(getMediaDownloadLink(fileName));
         resourceFile.setOwner(owner);
+        resourceFile.setCreator(creator);
+        resourceFile.setSize(size);
         return resourceFileRepository.save(resourceFile);
     }
     public String getServerLink(){
@@ -93,6 +94,9 @@ public class StorageService {
         }
     }
     public String getMediaDownloadLink(String fileName) {
-        return getServerLink() + "media/download/" + fileName;
+        return "/media/download/" + fileName;
+    }
+    public String getImageDownloadLink(String fileName) {
+        return "/media/" + fileName;
     }
 }

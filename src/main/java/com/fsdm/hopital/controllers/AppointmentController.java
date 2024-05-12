@@ -23,6 +23,11 @@ public class AppointmentController {
         Appointment savedAppointment = appointmentService.createAppointment(appointment);
         return ResponseEntity.ok(savedAppointment);
     }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Appointment> updateAppointment(@PathVariable Long id, @RequestBody AppointmentDTO appointment) {
+        Appointment updatedAppointment = appointmentService.updateAppointment(id, appointment);
+        return ResponseEntity.ok(updatedAppointment);
+    }
     @GetMapping("/{id}")
     public Appointment getAppointment(@PathVariable Long id) {
         return appointmentService.getAppointmentById(id);
@@ -43,11 +48,6 @@ public class AppointmentController {
     public ActionEntity deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
         return new ActionEntity("DELETE_APPOINTMENT","Appointment deleted successfully", true);
-    }
-    @PutMapping("/update")
-    public ActionEntity updateAppointment(@RequestBody AppointmentDTO appointment) {
-        appointmentService.updateAppointment(appointment);
-        return new ActionEntity("UPDATE_APPOINTMENT","Appointment updated successfully", true);
     }
     @PutMapping("/accept/{id}")
     public Appointment acceptAppointment(@PathVariable Long id) {

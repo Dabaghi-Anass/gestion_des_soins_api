@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   devtools:
     restart:
       enabled: true
@@ -35,5 +39,6 @@ sftp :
   localDirectory : uploads/
 server:
   port: 8070
+  address: 0.0.0.0
 #  address: 192.168.1.116
 

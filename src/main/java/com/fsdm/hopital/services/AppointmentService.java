@@ -84,17 +84,18 @@ public class AppointmentService {
        return appointmentRepository.save(appointment1);
     }
     @SneakyThrows
-    public Appointment updateAppointment(AppointmentDTO appointment){
-        if(appointmentTaken(appointment)) throw new AppException(ProcessingException.USER_NOT_AVAILABLE_AT_THIS_TIME);
+    public Appointment updateAppointment(Long id,AppointmentDTO appointment){
         if (appointment == null) throw new AppException(ProcessingException.APPOINTMENT_NOT_FOUND);
+        if(appointmentTaken(appointment)) throw new AppException(ProcessingException.USER_NOT_AVAILABLE_AT_THIS_TIME);
         Appointment appointment1 =
                 appointmentRepository
-                .findById(appointment.getId())
+                .findById(id)
                 .orElseThrow(() -> new AppException(ProcessingException.APPOINTMENT_NOT_FOUND));
         if(appointment.getDate() != null) appointment1.setDate(appointment.getDate());
         if(appointment.getStatus() != null) appointment1.setStatus(appointment.getStatus());
         if(appointment.getType() != null) appointment1.setType(appointment.getType());
         if(appointment.getReason() != null) appointment1.setReason(appointment.getReason());
+        if(appointment.getDuration() != 0) appointment1.setDuration(appointment.getDuration());
         return appointmentRepository.save(appointment1);
     }
     public List<Date> getSchedule(Long id){
