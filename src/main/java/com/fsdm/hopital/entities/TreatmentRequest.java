@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Inheritance(strategy = InheritanceType.JOINED)
 public class TreatmentRequest extends BaseEntity {
-    @Column(length = 2000)
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     private String title;
     @Enumerated(EnumType.STRING)

@@ -53,9 +53,6 @@ public class PatientsService {
         if(patientDTO.getMedicalInformation().getAllergies() != null){
             infos.setAllergies(patientDTO.getMedicalInformation().getAllergies());
         }
-        if(patientDTO.getMedicalInformation().getTemperature() != 0){
-            infos.setTemperature(patientDTO.getMedicalInformation().getTemperature());
-        }
         if(patientDTO.getMedicalInformation().getBloodType() != null){
             infos.setBloodType(patientDTO.getMedicalInformation().getBloodType());
         }

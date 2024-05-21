@@ -53,8 +53,8 @@ public class UserController {
     public List<String> getAllSpecialities(){
         return specialityRepository.findAllCategories();
     }
-    @GetMapping("/doctors")
-    public List<Doctor> getAllDoctors(){
-        return doctorsService.getAllDoctors();
+    @GetMapping("/employees")
+    public List<User> getAllDoctors(){
+        return userService.getEmployees();
     }
 }

@@ -80,4 +80,8 @@ public class StorageController {
         Pageable page = PageRequest.of(0,6);
         return resourceFileRepository.findAllByUserId(user_id,page);
     }
+    @DeleteMapping("/delete-doc/{id}")
+    public void deleteDocument(@PathVariable Long id){
+        storageService.deleteDocumentById(id);
+    }
 }

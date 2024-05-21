@@ -14,4 +14,6 @@ import java.util.List;
 public interface TreatmentRequestRepository extends JpaRepository<TreatmentRequest, Long> {
     @Query("SELECT t from TreatmentRequest t where t.sentTo.id = ?1")
     List<TreatmentRequest> findAllBySentToId(Long id);
+    @Query("SELECT t from TreatmentRequest t where t.sentTo.id = ?1 or t.sentBy.id = ?1")
+    List<TreatmentRequest> findAllByUser(Long id);
 }

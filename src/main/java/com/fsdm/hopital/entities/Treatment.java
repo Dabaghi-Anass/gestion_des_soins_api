@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Treatment extends BaseEntity{
-    @Column(length = 10000)
+    @Column(columnDefinition = "LONGTEXT")
     private String response;
     @Column(length = 1000)
     private String review;

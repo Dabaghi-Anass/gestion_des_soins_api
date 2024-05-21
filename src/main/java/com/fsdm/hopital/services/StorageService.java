@@ -32,8 +32,6 @@ public class StorageService {
     private final ResourceFileRepository resourceFileRepository;
     private final FTPClient ftpClient;
     private final UserService userService;
-    @Value("${sftp.remoteFilesDirectory}")
-    private String remoteDirectory;
     @Value("${server.port:8070}")
     private String serverPort;
     public String uploadFile(MultipartFile file){
@@ -55,6 +53,7 @@ public class StorageService {
             if(!status) throw new AppException(ProcessingException.INVALID_OPERATON);
             return getImageDownloadLink(fileUniqueName);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -98,5 +97,17 @@ public class StorageService {
     }
     public String getImageDownloadLink(String fileName) {
         return "/media/" + fileName;
+    }
+
+    @SneakyThrows
+    public void deleteDocumentById(Long id) {
+        ResourceFile resourceFile = resourceFileRepository.findById(id)
+                .orElseThrow(() -> new AppException(ProcessingException.INVALID_OPERATON));
+        try {
+            ftpClient.deleteFile(resourceFile.getName());
+            resourceFileRepository.delete(resourceFile);
+        } catch (IOException e) {
+            throw new AppException(ProcessingException.INVALID_OPERATON);
+        }
     }
 }

@@ -19,9 +19,18 @@ public class TreatmentsController {
     public List<TreatmentRequest> getTreatmentRequests(@PathVariable Long user_id) {
         return treatmentsService.getTreatmentRequestsOfUser(user_id);
     }
+    @GetMapping("/patient-requests/{user_id}")
+    public List<TreatmentRequest> getPatientTreatmentRequests(@PathVariable Long user_id) {
+        return treatmentsService.getTreatmentRequestsOfPatient(user_id);
+    }
     @PostMapping("/request-treatment")
     public TreatmentRequest requestTreatment(@RequestBody TreatmentRequestDTO treatmentRequestDTO) {
         return treatmentsService.requestTreatment(treatmentRequestDTO);
+    }
+    public record TreatmentReview(String review){};
+    @PutMapping("/add-review/{id}")
+    public Treatment addReviewTreatment(@PathVariable Long id, @RequestBody TreatmentReview notes) {
+        return treatmentsService.addTreatmentNotes(id,notes.review);
     }
     @PostMapping("/add-treatment")
     public Treatment addTreatment(@RequestBody TreatmentDTO treatmentDTO){

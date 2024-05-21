@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedicalInformation implements Serializable {
-    private float temperature;
     private String bloodType;
     private String allergies;
     private String conditionMedical;

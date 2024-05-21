@@ -35,6 +35,9 @@ public class TreatmentsService {
     public List<TreatmentRequest> getTreatmentRequestsOfUser(Long user_id) {
         return  treatmentRequestRepository.findAllBySentToId(user_id);
     }
+    public List<TreatmentRequest> getTreatmentRequestsOfPatient(Long user_id) {
+        return  treatmentRequestRepository.findAllByUser(user_id);
+    }
     public TreatmentRequest requestTreatment(TreatmentRequestDTO treatmentRequestDTO) {
         Long sentToId = treatmentRequestDTO.getSentToId();
         Long sentById = treatmentRequestDTO.getSentById();
@@ -100,6 +103,12 @@ public class TreatmentsService {
     public Treatment getTreatmentById(Long id) {
         return treatmentRepository.findById(id).orElseThrow(() -> new AppException(ProcessingException.INVALID_OPERATON));
     }
+     @SneakyThrows
+    public Treatment addTreatmentNotes(Long id, String notes) {
+         Treatment treatment =  treatmentRepository.findById(id).orElseThrow(() -> new AppException(ProcessingException.INVALID_OPERATON));
+         treatment.setReview(notes);
+         return treatmentRepository.save(treatment);
+    }
 
     public Treatment getTreatmentByRequestId(Long id) {
         return treatmentRepository.findByRequestId(id);
@@ -121,7 +130,9 @@ public class TreatmentsService {
 
     public void deleteRequest(Long id) {
         Treatment treatment = getTreatmentByRequestId(id);
-        treatmentRepository.deleteById(treatment.getId());
+        if(treatment != null){
+            treatmentRepository.deleteById(treatment.getId());
+        }
         treatmentRequestRepository.deleteById(id);
     }
 }
