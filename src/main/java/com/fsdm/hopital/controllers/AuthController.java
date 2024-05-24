@@ -32,11 +32,12 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> registerUser(@Validated @RequestBody User userDetails) {
         User user = authService.sendVerificationToken(userDetails);
+        User user1 = userService.updateUserRole(user);
         ActionEntity actionEntity = new ActionEntity("EMAIL_SENT" , "verification email sent" , true);
         String jwt = jwtUtils.generateToken(userDetails);
         response.addCookie(createAuthCookie(jwt));
         response.addHeader("x-auth" , jwt);
-        user.setPassword(null);
+        user1.setPassword(null);
         return ResponseEntity.ok(new RegisterResponse(actionEntity , user));
     }
     private Cookie createAuthCookie(String token){

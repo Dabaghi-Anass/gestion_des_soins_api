@@ -1,7 +1,9 @@
 package com.fsdm.hopital.services;
 
+import com.fsdm.hopital.dto.AppointmentDTO;
 import com.fsdm.hopital.dto.CareActivityDTO;
 import com.fsdm.hopital.dto.EntityToDto;
+import com.fsdm.hopital.entities.Appointment;
 import com.fsdm.hopital.entities.CareActivity;
 import com.fsdm.hopital.exceptions.AppException;
 import com.fsdm.hopital.exceptions.ProcessingException;
@@ -107,6 +109,22 @@ public class CareActivityService {
         return careActivityRepository
                 .findById(id)
                 .orElseThrow(() -> new AppException(ProcessingException.CARE_ACTIVITY_NOT_FOUND));
+    }
+
+    @SneakyThrows
+    public CareActivity updateActivity(Long id, CareActivityDTO appointment) {
+        if (appointment == null) throw new AppException(ProcessingException.APPOINTMENT_NOT_FOUND);
+        if(careActivityTaken(appointment)) throw new AppException(ProcessingException.USER_NOT_AVAILABLE_AT_THIS_TIME);
+        CareActivity appointment1 =
+                careActivityRepository
+                        .findById(id)
+                        .orElseThrow(() -> new AppException(ProcessingException.APPOINTMENT_NOT_FOUND));
+        if(appointment.getDate() != null) appointment1.setDate(appointment.getDate());
+        if(appointment.getStatus() != null) appointment1.setStatus(appointment.getStatus());
+        if(appointment.getType() != null) appointment1.setType(appointment.getType());
+        if(appointment.getDescription() != null) appointment1.setDescription(appointment.getDescription());
+        if(appointment.getDuration() != 0) appointment1.setDuration(appointment.getDuration());
+        return careActivityRepository.save(appointment1);
     }
     class CareActivityDateComparator implements Comparator<CareActivity> {
         @Override

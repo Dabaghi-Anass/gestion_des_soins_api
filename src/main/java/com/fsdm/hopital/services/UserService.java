@@ -120,17 +120,20 @@ public class UserService {
         if(user.getId() == null) throw new AppException(ProcessingException.INVALID_OPERATON);
         User userFromDb = getUserById(user.getId());
         userFromDb.setRole(user.getRole());
-        if(user.getRole().equals(Role.PATIENT)){
-            patientRepository.saveWithId(userFromDb.getId());
-        }else if(user.getRole().equals(Role.CAREGIVER)){
-            careGiverRepository.saveWithId(userFromDb.getId());
-        } else if (user.getRole().equals(Role.DOCTOR)) {
-            doctorRepository.saveWithId(userFromDb.getId());
-        } else if (user.getRole().equals(Role.NURSE)) {
-            nurseRepository.saveWithId(userFromDb.getId());
-        } else if(user.getRole().equals(Role.COMPANION)){
-            companionRepository.saveWithId(userFromDb.getId());
+        if(userFromDb.getRole() != null){
+            if(userFromDb.getRole().equals(Role.PATIENT)){
+                patientRepository.saveWithId(userFromDb.getId());
+            }else if(userFromDb.getRole().equals(Role.CAREGIVER)){
+                careGiverRepository.saveWithId(userFromDb.getId());
+            } else if (userFromDb.getRole().equals(Role.DOCTOR)) {
+                doctorRepository.saveWithId(userFromDb.getId());
+            } else if (userFromDb.getRole().equals(Role.NURSE)) {
+                nurseRepository.saveWithId(userFromDb.getId());
+            } else if(userFromDb.getRole().equals(Role.COMPANION)){
+                companionRepository.saveWithId(userFromDb.getId());
+            }
         }
+
         return userRepository.save(userFromDb);
     }
 
@@ -141,5 +144,16 @@ public class UserService {
 
     public List<User> getEmployees() {
         return userRepository.findAllEmployees();
+    }
+
+    public User getUserByProfileId() {
+        return userRepository.findByProfileId(1L);
+    }
+    public Companion getCompanionById(Long id){
+        return companionRepository.findById(id).orElseThrow();
+    }
+
+    public Companion updateCompanion(Companion companion) {
+        return companionRepository.save(companion);
     }
 }

@@ -3,6 +3,7 @@ package com.fsdm.hopital.services;
 import com.fsdm.hopital.dto.MedicalInformation;
 import com.fsdm.hopital.dto.PatientDTO;
 import com.fsdm.hopital.entities.CareGiver;
+import com.fsdm.hopital.entities.Companion;
 import com.fsdm.hopital.entities.Patient;
 import com.fsdm.hopital.exceptions.AppException;
 import com.fsdm.hopital.exceptions.ProcessingException;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,27 +31,35 @@ public class PatientsService {
         if(patientOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
         return patientOptional.get();
     }
-    @SneakyThrows
+
     public Patient updatePatient(PatientDTO patientDTO) {
-        Optional<Patient> patientOptional = patientRepository.findById(patientDTO.getId());
-        if(patientOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
-        Patient patient = patientOptional.get();
-        if(patientDTO.getCareGiverId() != null) {
-            CareGiver careGiver = userService.getCareGiverById(patientDTO.getCareGiverId());
-            patient.setCareGiver(careGiver);
+        try{
+            Optional<Patient> patientOptional = patientRepository.findById(patientDTO.getId());
+            if(patientOptional.isEmpty()) throw new AppException(ProcessingException.USER_NOT_FOUND);
+            Patient patient = patientOptional.get();
+            if(patient.getMedicalInformation() == null){
+                patient.setMedicalInformation(new MedicalInformation());
+            }
+            if(patientDTO.getMedicalInformation() != null){
+                MedicalInformation infos = updateMedicalInformation(patientDTO, patient);
+                patient.setMedicalInformation(infos);
+            }
+            if(patientDTO.getCompanionId() != null){
+                Companion companion = userService.getCompanionById(patientDTO.getCompanionId());
+                patient.setCompanion(companion);
+            }
+            return patientRepository.save(patientOptional.get());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
         }
-        if(patient.getMedicalInformation() == null){
-            patient.setMedicalInformation(new MedicalInformation());
-        }
-        if(patientDTO.getMedicalInformation() != null){
-            MedicalInformation infos = updateMedicalInformation(patientDTO, patient);
-            patient.setMedicalInformation(infos);
-        }
-        return patientRepository.save(patientOptional.get());
+        return null;
     }
 
     private static MedicalInformation updateMedicalInformation(PatientDTO patientDTO, Patient patient) {
         MedicalInformation infos = patient.getMedicalInformation();
+        if(patientDTO.getMedicalInformation() == null){
+            infos = new MedicalInformation();
+        }
         if(patientDTO.getMedicalInformation().getAllergies() != null){
             infos.setAllergies(patientDTO.getMedicalInformation().getAllergies());
         }
@@ -57,5 +67,8 @@ public class PatientsService {
             infos.setBloodType(patientDTO.getMedicalInformation().getBloodType());
         }
         return infos;
+    }
+    public List<Patient> getAllPatients(){
+        return patientRepository.findAll();
     }
 }

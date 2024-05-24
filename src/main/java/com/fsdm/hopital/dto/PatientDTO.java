@@ -1,6 +1,7 @@
 package com.fsdm.hopital.dto;
 
 import com.fsdm.hopital.entities.CareGiver;
+import com.fsdm.hopital.entities.Companion;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.FetchType;
@@ -15,5 +16,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientDTO extends UserDTO {
     private MedicalInformation medicalInformation;
-    private Long careGiverId;
+    private Long companionId;
 }

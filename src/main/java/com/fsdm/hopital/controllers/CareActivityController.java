@@ -1,7 +1,9 @@
 package com.fsdm.hopital.controllers;
 
 import com.fsdm.hopital.dto.ActionEntity;
+import com.fsdm.hopital.dto.AppointmentDTO;
 import com.fsdm.hopital.dto.CareActivityDTO;
+import com.fsdm.hopital.entities.Appointment;
 import com.fsdm.hopital.entities.CareActivity;
 import com.fsdm.hopital.entities.CareActivity;
 import com.fsdm.hopital.repositories.CareActivityRepository;
@@ -24,6 +26,11 @@ public class CareActivityController {
         public ResponseEntity<CareActivity> createCareActivity(@RequestBody CareActivityDTO appointment) {
             CareActivity savedCareActivity = careActivityService.createCareActivity(appointment);
             return ResponseEntity.ok(savedCareActivity);
+        }
+        @PutMapping("/update/{id}")
+        public ResponseEntity<CareActivity> updateAppointment(@PathVariable Long id, @RequestBody CareActivityDTO appointment) {
+            CareActivity updatedAppointment = careActivityService.updateActivity(id, appointment);
+            return ResponseEntity.ok(updatedAppointment);
         }
         @GetMapping("/{id}")
         public CareActivity getCareActivity(@PathVariable Long id) {

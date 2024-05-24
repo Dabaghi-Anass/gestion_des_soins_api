@@ -49,6 +49,10 @@ public class UserController {
     public User retreiveUser(@PathVariable Long id){
         return userService.getUserById(id);
     }
+    @GetMapping("/get-by-profile/{id}")
+    public User retreiveUserByProfile(@PathVariable Long id){
+        return userService.getUserByProfileId();
+    }
     @GetMapping("/specialities")
     public List<String> getAllSpecialities(){
         return specialityRepository.findAllCategories();
@@ -56,5 +60,17 @@ public class UserController {
     @GetMapping("/employees")
     public List<User> getAllDoctors(){
         return userService.getEmployees();
+    }
+    @GetMapping("/all-patients")
+    public List<Patient> getPatients(){
+        return patientsService.getAllPatients();
+    }
+    @PutMapping("/companion")
+    public Companion updateCompanion(Companion companion){
+        return userService.updateCompanion(companion);
+    }
+    @GetMapping("/most-rated-doctors")
+    public List<Doctor> getMostRatedDoctors(){
+        return doctorsService.getMostRatedDoctors();
     }
 }
