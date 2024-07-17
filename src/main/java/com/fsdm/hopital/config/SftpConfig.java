@@ -25,10 +25,6 @@ public class SftpConfig {
     private String user;
     @Value("${sftp.password}")
     private String password;
-    @Value("${sftp.remoteFilesDirectory}")
-    private String remoteFilesDirectory;
-    @Value("${sftp.remoteImagesDirectory}")
-    private String remoteImagesDirectory;
 
     @Bean
     @SneakyThrows

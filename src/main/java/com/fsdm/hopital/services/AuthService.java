@@ -33,8 +33,7 @@ public class AuthService {
     }
     @SneakyThrows
     public User sendVerificationToken(User user) {
-//        user.setIsVerified(false);
-        user.setIsVerified(true);
+        user.setIsVerified(false);
         User userFromDb = userService.createUser(user);
         EmailVerificationToken tokenFromDb = tokenService.saveToken(generateEmailVToken(userFromDb));
         emailService.sendVerificationEmail(user.getUsername(), user.getFirstName(), tokenFromDb.getToken());
