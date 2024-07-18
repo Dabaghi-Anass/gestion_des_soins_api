@@ -28,17 +28,19 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig implements WebMvcConfigurer {
+    @Value("${CLIENT_URL}")
+    public String clientDomain;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 .allowedOriginPatterns("*")
-                .allowedMethods("GET" , "POST" , "PUT" , "DELETE")
+                .allowedMethods("GET" , "POST" , "PUT" ,"OPTIONS", "DELETE")
                 .allowedHeaders("*")
                 .exposedHeaders("x-auth")
                 .maxAge(3600);
         registry.addMapping("/media/**")
                 .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedMethods("GET", "POST", "PUT","OPTIONS", "DELETE")
                 .allowedHeaders("*")
                 .exposedHeaders("x-auth")
                 .maxAge(3600);
@@ -63,11 +65,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOrigins(List.of(clientDomain));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS" , "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("x-auth"));
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", configuration);
         return source;
