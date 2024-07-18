@@ -84,7 +84,7 @@ public class StorageService {
     }
     public String getServerLink(){
         try {
-            if(serverPort != null && !serverPort.isBlank()){
+            if(!serverPort.isBlank() && !serverPort.equals("80") && !serverPort.equals("443") && !serverPort.equals("8080")){
                 return String.format("%s://%s:%s/", request.getScheme(), request.getServerName(),request.getServerPort());
             }
             return String.format("%s://%s/", request.getScheme(), request.getServerName());
