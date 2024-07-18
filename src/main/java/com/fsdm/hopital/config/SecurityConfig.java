@@ -2,6 +2,7 @@ package com.fsdm.hopital.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,11 +63,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8081","http://localhost:5500"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS" , "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("x-auth"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", configuration);
         return source;

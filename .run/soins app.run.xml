@@ -1,5 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="soins app" type="Application" factoryName="Application">
+    <envs>
+      <env name="WEB_CLIENT_DOMAIN" value="http://localhost:4040" />
+    </envs>
     <option name="MAIN_CLASS_NAME" value="com.fsdm.hopital.HopitalApplication" />
     <module name="hopital" />
     <extension name="net.ashald.envfile">
