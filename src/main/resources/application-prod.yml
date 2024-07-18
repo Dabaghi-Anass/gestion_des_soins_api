@@ -31,5 +31,3 @@ sftp :
   host : ${SFTP_HOST}
   username: ${SFTP_USER}
   password: ${SFTP_PASS}
-server:
-  port: ${SERVER_PORT:8070}
