@@ -11,10 +11,13 @@ import com.fsdm.hopital.dto.ChangePasswordRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +26,8 @@ import java.util.List;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+    @Value("${CLIENT_URL}")
+    public String client_url;
     private final JwtUtils jwtUtils;
     private final AuthService authService;
     private final HttpServletResponse response;
@@ -85,12 +90,15 @@ public class AuthController {
         if(user == null) return ResponseEntity.badRequest().body(new ActionEntity("USER_NOT_FOUND" , "user not found" , false));
         return ResponseEntity.ok(new ActionEntity("USER_VERIFIED" , "user verified successfully" , user.getIsVerified()));
     }
+    @SneakyThrows
     @GetMapping("/verifyEmail")
-    public String verifyAndRegisterUser(@RequestParam("token") String token) {
+    public String verifyAndRegisterUser(@RequestParam("token") String token, HttpServletResponse response) {
         User user =  authService.verifyEmail(token);
         String jwt = jwtUtils.generateToken(user);
         response.addCookie(createAuthCookie(jwt));
         response.addHeader("x-auth" , jwt);
+        //redirect user to web client at the register page
+        //response.sendRedirect(String.format("%s/register" , client_url));
         return "email verified successfully";
     }
     @GetMapping("/current-user")

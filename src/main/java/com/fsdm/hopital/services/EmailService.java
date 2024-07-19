@@ -26,7 +26,7 @@ public class EmailService {
     private final HttpServletRequest request;
     public String getServerLink()
     {
-        if(serverPort != null)
+        if(serverPort != null && !serverPort.isEmpty() && !serverPort.equals("80") && !serverPort.equals("443") && !serverPort.equals("8080"))
             return String.format("%s://%s:%s", request.getScheme(), request.getServerName(), serverPort);
         return String.format("%s://%s", request.getScheme(), request.getServerName());
     }
@@ -35,10 +35,7 @@ public class EmailService {
         String verifyLink = String.format("%s/api/auth/verifyEmail?token=%s", getServerLink(), token);
         String body = "Bonjour Mr (Mlle) " + username + "\n" +
                 "clicker le lien si dessus pour verifier votre email\n" +
-                verifyLink + "\n" +
-                "si vous ne vous êtes pas inscrit sur notre application, veuillez\n" +
-                "ne pas cliquer sur ce lien\n" +
-                "visiter notre site: " + getServerLink() + "\n";
+                verifyLink + "\n";
         sendEmail(email, "Verify Your Register", username, body);
     }
     public void sendEmail(String toEmail, String subject,String username, String body){
