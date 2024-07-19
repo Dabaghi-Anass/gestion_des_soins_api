@@ -35,5 +35,5 @@ sftp:
   username: anass
   password: "0000"
 server:
-  port: 8070
+  port: 8080
   address: 0.0.0.0
