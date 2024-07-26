@@ -45,6 +45,7 @@ public class SftpConfig {
         }
 
         ftpClient.login(user, password);
+        ftpClient.enterLocalPassiveMode();
         return ftpClient;
     }
 }
