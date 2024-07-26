@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    @Value("${CLIENT_URL}")
+    @Value("${CLIENT_URL:http://localhost:3000}")
     public String client_url;
     private final JwtUtils jwtUtils;
     private final AuthService authService;
@@ -92,14 +92,13 @@ public class AuthController {
     }
     @SneakyThrows
     @GetMapping("/verifyEmail")
-    public String verifyAndRegisterUser(@RequestParam("token") String token, HttpServletResponse response) {
+    public void verifyAndRegisterUser(@RequestParam("token") String token, HttpServletResponse response) {
         User user =  authService.verifyEmail(token);
         String jwt = jwtUtils.generateToken(user);
         response.addCookie(createAuthCookie(jwt));
         response.addHeader("x-auth" , jwt);
         //redirect user to web client at the register page
-        //response.sendRedirect(String.format("%s/register" , client_url));
-        return "email verified successfully";
+        response.sendRedirect(String.format("%s/register" , client_url));
     }
     @GetMapping("/current-user")
     public ResponseEntity<User> getCurrentUser(@RequestHeader("x-auth") String token) {
