@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +17,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Modifying
     @Query(value = "insert into patients (id) values (?1)", nativeQuery = true)
     void saveWithId(Long id);
+    @Query(value="SELECT p FROM Patient p WHERE p.companion IS NULL")
+    List<Patient> findAllUnAssociated();
 }

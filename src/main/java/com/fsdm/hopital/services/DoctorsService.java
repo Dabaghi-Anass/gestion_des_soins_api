@@ -62,6 +62,8 @@ public class DoctorsService {
         return doctorRepository.findAll();
     }
     public List<Doctor> getMostRatedDoctors(){
-        return doctorRepository.findMostRated();
+        List<Doctor> mostRatedDoctors = doctorRepository.findMostRated();
+        if(mostRatedDoctors.isEmpty()) return doctorRepository.findAll();
+        return mostRatedDoctors;
     }
 }

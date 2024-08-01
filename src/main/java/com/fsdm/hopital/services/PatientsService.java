@@ -66,9 +66,16 @@ public class PatientsService {
         if(patientDTO.getMedicalInformation().getBloodType() != null){
             infos.setBloodType(patientDTO.getMedicalInformation().getBloodType());
         }
+        if(patientDTO.getMedicalInformation().getConditionMedical() != null){
+            infos.setConditionMedical(patientDTO.getMedicalInformation().getConditionMedical());
+        }
         return infos;
     }
     public List<Patient> getAllPatients(){
         return patientRepository.findAll();
+    }
+
+    public List<Patient> getAllUnAssociatedPatients() {
+        return patientRepository.findAllUnAssociated();
     }
 }

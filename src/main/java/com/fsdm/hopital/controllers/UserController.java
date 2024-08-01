@@ -65,6 +65,10 @@ public class UserController {
     public List<Patient> getPatients(){
         return patientsService.getAllPatients();
     }
+    @GetMapping("/all-unassociated-patients")
+    public List<Patient> getUnAssociatedPatients(){
+        return patientsService.getAllUnAssociatedPatients();
+    }
     @PutMapping("/companion")
     public Companion updateCompanion(Companion companion){
         return userService.updateCompanion(companion);

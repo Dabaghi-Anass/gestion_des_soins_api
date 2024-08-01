@@ -19,9 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.apache.commons.net.ftp.FTP;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.UUID;
 
@@ -47,9 +48,10 @@ public class StorageService {
     }
     public String uploadImage(MultipartFile file){
         try{
+            InputStream scaledInputStream = scaleImage(file.getInputStream(), 200, 200);
             var fileUniqueName = System.currentTimeMillis() +file.getOriginalFilename();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            boolean status = ftpClient.appendFile(fileUniqueName, file.getInputStream());
+            boolean status = ftpClient.appendFile(fileUniqueName, scaledInputStream);
             if(!status) throw new AppException(ProcessingException.INVALID_OPERATON);
             return getImageDownloadLink(fileUniqueName);
         }catch (Exception e){
@@ -57,6 +59,21 @@ public class StorageService {
             return null;
         }
     }
+    public InputStream scaleImage(InputStream inputStream, int width, int height) throws Exception {
+        BufferedImage originalImage = ImageIO.read(inputStream);
+        Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage scaledBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = scaledBufferedImage.createGraphics();
+        g2d.drawImage(scaledImage, 0, 0, null);
+        g2d.dispose();
+
+        // Convert the scaled image back to InputStream
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(scaledBufferedImage, "jpg", os);
+        os.flush();
+        return new ByteArrayInputStream(os.toByteArray());
+    }
+
     @SneakyThrows
     public Resource downloadFile(String fileName){
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
