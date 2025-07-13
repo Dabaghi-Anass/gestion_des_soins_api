@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -31,7 +31,7 @@ import java.util.UUID;
 public class StorageService {
     private final HttpServletRequest request;
     private final ResourceFileRepository resourceFileRepository;
-    private final FTPClient ftpClient;
+    private final FTPSClient ftpClient;
     private final UserService userService;
     @Value("${server.port:8070}")
     private String serverPort;
@@ -51,8 +51,9 @@ public class StorageService {
             InputStream scaledInputStream = scaleImage(file.getInputStream(), 200, 200);
             var fileUniqueName = System.currentTimeMillis() +file.getOriginalFilename();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            boolean status = ftpClient.appendFile(fileUniqueName, scaledInputStream);
-            if(!status) throw new AppException(ProcessingException.INVALID_OPERATON);
+            ftpClient.enterLocalPassiveMode();
+            boolean stored = ftpClient.appendFile(fileUniqueName, scaledInputStream);
+            if(!stored) throw new AppException(ProcessingException.INVALID_OPERATON);
             return getImageDownloadLink(fileUniqueName);
         }catch (Exception e){
             System.out.println(e.getMessage());

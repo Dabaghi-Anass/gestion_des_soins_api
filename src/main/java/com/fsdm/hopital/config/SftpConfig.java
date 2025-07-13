@@ -5,7 +5,7 @@ import com.fsdm.hopital.exceptions.ProcessingException;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.net.PrintCommandListener;
-import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,10 +28,10 @@ public class SftpConfig {
 
     @Bean
     @SneakyThrows
-    public FTPClient ftpClient() {
-        FTPClient ftpClient = new FTPClient();
+    public FTPSClient ftpClient() {
+        FTPSClient ftpClient = new FTPSClient();
         //for logging
-        ftpClient.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+        ftpClient.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out), true));
 
         try {
             ftpClient.connect(host, port);
